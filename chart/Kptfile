@@ -1,0 +1,11 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: gitlab-ci-pipelines-exporter
+upstream:
+  type: git
+  git:
+    commit: 5defaead8cd86acce7a36e9bd53761acf2d85cf4
+    repo: https://github.com/mvisonneau/helm-charts
+    directory: /charts/gitlab-ci-pipelines-exporter
+    ref: gitlab-ci-pipelines-exporter-0.3.4
