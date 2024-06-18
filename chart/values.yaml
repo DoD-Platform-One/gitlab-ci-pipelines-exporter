@@ -6,7 +6,9 @@ replicas: 1
 
 image:
   # image.repository -- image repository
-  repository: registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter:v0.5.8
+  repository: "registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"
+  tag: "v0.5.8"
+
 
   # image.tag -- image tag
   # tag: <default to chart version>
@@ -43,6 +45,7 @@ podLabels: {}
 
 # podAnnotations -- additional annotations for the pods
 podAnnotations: {}
+
 
 service:
   # type -- service type
@@ -100,12 +103,32 @@ affinity: {}
 
 # securityContext -- security context to apply to the pods
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context
+# BIG BANG ADDITIONS
 securityContext:
   # runAsUser: 65534  # run as nobody user
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  enabled: true
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
 
 # containerSecurityContext -- security context to apply to the containers
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context
 containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  enabled: true
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
   # allowPrivilegeEscalation: false
 
 # command -- command for the exporter binary
@@ -157,18 +180,26 @@ hostAliases:
 ## through the Prometheus operator: https://github.com/coreos/prometheus-operator
 serviceMonitor:
   # serviceMonitor.enabled -- deploy a serviceMonitor resource
-  enabled: false
+  enabled: true
 
   # serviceMonitor.endpoints -- endpoints configuration for the monitor
   endpoints:
     - port: http
       interval: 10s
+      scheme: "https"
+      tlsConfig:
+        caFile: /etc/prom-certs/root-cert.pem
+        certFile: /etc/prom-certs/cert-chain.pem
+        keyFile: /etc/prom-certs/key.pem
+        insecureSkipVerify: true
 
   # serviceMonitor.labels -- additional labels for the service monitor
   labels: {}
 
   # serviceMonitor.annotations -- additional annotations for the service monitor
+  # BIG BANG ADDITIONS SCHEME AND TLSCONFIG
   annotations: {}
+
 
 ## Spin up a redis pod using the bitnami chart
 ## https://github.com/bitnami/charts/blob/master/bitnami/redis
@@ -237,3 +268,28 @@ rbac:
   # serviceAccount -- default name of serviceAccount is "default" if you don't define the name by yourself
   serviceAccount:
     name: ""
+
+## Big bang
+domain: dev.bigbang.mil
+monitoring:
+  enabled: true
+istio:
+  # -- Toggle istio integration
+  enabled: false
+  gcpe:
+    annotations: {}
+    labels: {}
+    gateways:
+      - istio-system/main
+    # optional - only affects the Istio VirtualService ingress. Does not affect Gitlab configuration
+    hosts: null
+networkPolicies:
+  enabled: true
+  ingressLabels:
+    app: istio-ingressgateway
+    istio: ingressgateway
+  # See `kubectl cluster-info` and then resolve to IP
+  controlPlaneCidr: 0.0.0.0/0
+
+bbtests:  
+  enabled: false
