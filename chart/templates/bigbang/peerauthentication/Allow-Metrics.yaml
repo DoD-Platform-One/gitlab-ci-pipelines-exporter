@@ -1,0 +1,16 @@
+{{- if .Values.networkPolicies.enabled }}
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:  
+  name: prometheus-metrics-exception
+  namespace: {{ .Release.Namespace }}
+spec:
+  mtls:
+    mode: STRICT
+  selector:
+    matchLabels:
+      app: prometheus
+  portLevelMtls:
+    "8080":
+      mode: PERMISSIVE
+{{- end }}

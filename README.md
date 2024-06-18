@@ -1,6 +1,6 @@
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.0](https://img.shields.io/badge/Version-0.3.4--bb.0-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
+![Version: 0.3.4-bb.1](https://img.shields.io/badge/Version-0.3.4--bb.1-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -36,7 +36,8 @@ helm install gitlab-ci-pipelines-exporter chart/
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicas | int | `1` | amount of desired pod(s) replica(s) |
-| image.repository | string | `"quay.io/mvisonneau/gitlab-ci-pipelines-exporter"` | image repository |
+| image.repository | string | `"registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"` | image repository |
+| image.tag | string | `"v0.5.8"` | image tag tag: <default to chart version> |
 | image.pullPolicy | string | `"IfNotPresent"` | image pullPolicy |
 | image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | image.pullCredentials | object | `{}` | Automatically create a secret with the credentials and use it Cannot be used in conjunction of image.pullSecrets |
@@ -62,8 +63,8 @@ helm install gitlab-ci-pipelines-exporter chart/
 | nodeSelector | object | `{}` | node selector for pod assignment # ref: https://kubernetes.io/docs/user-guide/node-selection/ |
 | tolerations | list | `[]` | tolerations for pod assignment # ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
 | affinity | object | `{}` | affinity for pod assignment # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity |
-| securityContext | string | `nil` | security context to apply to the pods # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context |
-| containerSecurityContext | string | `nil` | security context to apply to the containers # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the pods # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context BIG BANG ADDITIONS |
+| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the containers # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context |
 | command | list | `["gitlab-ci-pipelines-exporter","run"]` | command for the exporter binary |
 | args | list | `["--config","/etc/config.yml"]` | arguments for the exporter binary |
 | envVariables | list | `[{"name":"GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS","value":"tcp://127.0.0.1:8082"}]` | environment variables for the container |
@@ -71,10 +72,10 @@ helm install gitlab-ci-pipelines-exporter chart/
 | gitlabSecret | string | `""` | name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified) |
 | webhookSecret | string | `""` | name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified) |
 | hostAliases | list | `[]` |  |
-| serviceMonitor.enabled | bool | `false` | deploy a serviceMonitor resource |
-| serviceMonitor.endpoints | list | `[{"interval":"10s","port":"http"}]` | endpoints configuration for the monitor |
+| serviceMonitor.enabled | bool | `true` | deploy a serviceMonitor resource |
+| serviceMonitor.endpoints | list | `[{"interval":"10s","port":"http","scheme":"https","tlsConfig":{"caFile":"/etc/prom-certs/root-cert.pem","certFile":"/etc/prom-certs/cert-chain.pem","insecureSkipVerify":true,"keyFile":"/etc/prom-certs/key.pem"}}]` | endpoints configuration for the monitor |
 | serviceMonitor.labels | object | `{}` | additional labels for the service monitor |
-| serviceMonitor.annotations | object | `{}` | additional annotations for the service monitor |
+| serviceMonitor.annotations | object | `{}` | additional annotations for the service monitor BIG BANG ADDITIONS SCHEME AND TLSCONFIG |
 | redis.enabled | bool | `true` | deploy a redis statefulset |
 | redis.architecture | string | `"standalone"` | run in standalone or clustermode |
 | redis.auth.enabled | bool | `false` | enable authentication |
@@ -90,6 +91,18 @@ helm install gitlab-ci-pipelines-exporter chart/
 | ingress.hosts | list | `["gcpe.example.com"]` | ingress hosts |
 | ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
 | rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
+| domain | string | `"dev.bigbang.mil"` |  |
+| monitoring.enabled | bool | `true` |  |
+| istio.enabled | bool | `false` | Toggle istio integration |
+| istio.gcpe.annotations | object | `{}` |  |
+| istio.gcpe.labels | object | `{}` |  |
+| istio.gcpe.gateways[0] | string | `"istio-system/main"` |  |
+| istio.gcpe.hosts | string | `nil` |  |
+| networkPolicies.enabled | bool | `true` |  |
+| networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
+| networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
+| networkPolicies.controlPlaneCidr | string | `"0.0.0.0/0"` |  |
+| bbtests.enabled | bool | `false` |  |
 
 ## Contributing
 

@@ -1,0 +1,34 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: "gitlab-ci-pipelines-exporter"
+    {{- if .Values.istio.gcpe.labels }}
+      {{ toYaml .Values.istio.gcpe.labels | indent 4 }}
+    {{- end }}
+  {{- if .Values.istio.gcpe.annotations }}
+  annotations:
+    {{ toYaml .Values.istio.gcpe.annotations | indent 4 }}
+  {{- end }}
+spec:
+  gateways:
+    {{- range .Values.istio.gcpe.gateways }}
+    - {{ . | quote }}
+    {{- end }}
+  hosts:
+    {{- range .Values.istio.gcpe.hosts }}
+    - {{ . | quote }}
+    {{- end }}
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: gitlab-ci-pipelines-exporter
+            port:
+              number: 8080
+{{- end }}
