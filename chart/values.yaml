@@ -148,7 +148,8 @@ envVariables:
 
 # config -- configuration of the exporter
 config:
-  {}
+  gitlab:
+    url: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
   # # Complete configuration syntax reference available here:
   # # https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/master/docs/configuration_syntax.md
   # gitlab:
@@ -276,13 +277,6 @@ monitoring:
 istio:
   # -- Toggle istio integration
   enabled: false
-  gcpe:
-    annotations: {}
-    labels: {}
-    gateways:
-      - istio-system/main
-    # optional - only affects the Istio VirtualService ingress. Does not affect Gitlab configuration
-    hosts: null
 networkPolicies:
   enabled: true
   ingressLabels:

@@ -10,4 +10,7 @@ spec:
   - from:
     - source:
         namespaces: ["gitlab-ci-pipelines-exporter"]
+  - to:
+    - operation:
+        methods: ['*']
 {{- end }}

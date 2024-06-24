@@ -1,6 +1,6 @@
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.1](https://img.shields.io/badge/Version-0.3.4--bb.1-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
+![Version: 0.3.4-bb.2](https://img.shields.io/badge/Version-0.3.4--bb.2-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -68,7 +68,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | command | list | `["gitlab-ci-pipelines-exporter","run"]` | command for the exporter binary |
 | args | list | `["--config","/etc/config.yml"]` | arguments for the exporter binary |
 | envVariables | list | `[{"name":"GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS","value":"tcp://127.0.0.1:8082"}]` | environment variables for the container |
-| config | object | `{}` | configuration of the exporter |
+| config | object | `{"gitlab":{"url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"}}` | configuration of the exporter |
 | gitlabSecret | string | `""` | name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified) |
 | webhookSecret | string | `""` | name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified) |
 | hostAliases | list | `[]` |  |
@@ -94,10 +94,6 @@ helm install gitlab-ci-pipelines-exporter chart/
 | domain | string | `"dev.bigbang.mil"` |  |
 | monitoring.enabled | bool | `true` |  |
 | istio.enabled | bool | `false` | Toggle istio integration |
-| istio.gcpe.annotations | object | `{}` |  |
-| istio.gcpe.labels | object | `{}` |  |
-| istio.gcpe.gateways[0] | string | `"istio-system/main"` |  |
-| istio.gcpe.hosts | string | `nil` |  |
 | networkPolicies.enabled | bool | `true` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
