@@ -1,0 +1,14 @@
+kyverno:
+  git:
+    repo: "https://repo1.dso.mil/big-bang/product/packages/kyverno.git"
+    branch: "main"
+  namespace: "kyverno"
+  package-name: "kyverno"
+gitlab:
+  flux:
+    timeout: 20m
+  git:
+    repo: "https://repo1.dso.mil/big-bang/product/packages/gitlab.git"
+    branch: "ci-exporter-testing"
+  namespace: "gitlab"
+  package-name: "gitlab"

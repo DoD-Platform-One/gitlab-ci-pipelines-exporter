@@ -1,23 +1,29 @@
+<!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.3](https://img.shields.io/badge/Version-0.3.4--bb.3-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
+![Version: 0.3.4-bb.4](https://img.shields.io/badge/Version-0.3.4--bb.4-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
 ## Upstream References
-* <https://github.com/mvisonneau/gitlab-ci-pipelines-exporter>
+- <https://github.com/mvisonneau/gitlab-ci-pipelines-exporter>
 
 * <https://github.com/mvisonneau/helm-charts/tree/main/charts/gitlab-ci-pipelines-exporter>
 
+## Upstream Release Notes
+
+The [upstream chart's release notes](https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/main/CHANGELOG.md) may help when reviewing this package.
+
 ## Learn More
-* [Application Overview](docs/overview.md)
-* [Other Documentation](docs/)
+
+- [Application Overview](docs/overview.md)
+- [Other Documentation](docs/)
 
 ## Pre-Requisites
 
-* Kubernetes Cluster deployed
-* Kubernetes config installed in `~/.kube/config`
-* Helm installed
+- Kubernetes Cluster deployed
+- Kubernetes config installed in `~/.kube/config`
+- Helm installed
 
 Install Helm
 
@@ -25,8 +31,9 @@ https://helm.sh/docs/intro/install/
 
 ## Deployment
 
-* Clone down the repository
-* cd into directory
+- Clone down the repository
+- cd into directory
+
 ```bash
 helm install gitlab-ci-pipelines-exporter chart/
 ```
@@ -41,7 +48,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | image.pullPolicy | string | `"IfNotPresent"` | image pullPolicy |
 | image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | image.pullCredentials | object | `{}` | Automatically create a secret with the credentials and use it Cannot be used in conjunction of image.pullSecrets |
-| customLabels | object | `{}` | Custom labels to add into metadata |
+| customLabels | string | `nil` | Custom labels to add into metadata |
 | labels | object | `{}` | additional labels for the service |
 | annotations | object | `{}` | additional annotations for the service |
 | podLabels | object | `{}` | additional labels for the pods |
@@ -68,15 +75,35 @@ helm install gitlab-ci-pipelines-exporter chart/
 | command | list | `["gitlab-ci-pipelines-exporter","run"]` | command for the exporter binary |
 | args | list | `["--config","/etc/config.yml"]` | arguments for the exporter binary |
 | envVariables | list | `[{"name":"GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS","value":"tcp://127.0.0.1:8082"}]` | environment variables for the container |
-| config | object | `{"gitlab":{"url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"}}` | configuration of the exporter |
+| config | object | `{"gitlab":{"enable_health_check":false,"health_url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181","url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"},"project_defaults":{"pull":{"refs":{"merge_requests":{"enabled":true,"max_age_seconds":28800},"tags":{"most_recent":1}}}},"projects":[{"name":"test/test1","pull":{"pipeline":{"jobs":{"enabled":true}},"refs":{"merge_requests":{"enabled":true,"max_age_seconds":43200}}}}]}` | configuration of the exporter |
 | gitlabSecret | string | `""` | name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified) |
 | webhookSecret | string | `""` | name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified) |
 | hostAliases | list | `[]` |  |
-| serviceMonitor.enabled | bool | `true` | deploy a serviceMonitor resource |
+| serviceMonitor.enabled | bool | `false` | deploy a serviceMonitor resource |
 | serviceMonitor.endpoints | list | `[{"interval":"10s","port":"http","scheme":"https","tlsConfig":{"caFile":"/etc/prom-certs/root-cert.pem","certFile":"/etc/prom-certs/cert-chain.pem","insecureSkipVerify":true,"keyFile":"/etc/prom-certs/key.pem"}}]` | endpoints configuration for the monitor |
 | serviceMonitor.labels | object | `{}` | additional labels for the service monitor |
 | serviceMonitor.annotations | object | `{}` | additional annotations for the service monitor BIG BANG ADDITIONS SCHEME AND TLSCONFIG |
-| redis.enabled | bool | `true` | deploy a redis statefulset |
+| redis-bb.enabled | bool | `true` |  |
+| redis-bb.auth.enabled | bool | `false` |  |
+| redis-bb.istio.redis.enabled | bool | `false` |  |
+| redis-bb.image.registry | string | `"registry1.dso.mil"` |  |
+| redis-bb.image.repository | string | `"ironbank/bitnami/redis"` |  |
+| redis-bb.image.tag | string | `"7.2.4"` |  |
+| redis-bb.image.pullSecrets[0] | string | `"private-registry"` |  |
+| redis-bb.networkPolicies.enabled | bool | `true` |  |
+| redis-bb.networkPolicies.controlPlaneCidr | string | `"0.0.0.0/0"` |  |
+| redis-bb.master.containerSecurityContext.enabled | bool | `true` |  |
+| redis-bb.master.containerSecurityContext.runAsUser | int | `1000` |  |
+| redis-bb.master.containerSecurityContext.runAsGroup | int | `1000` |  |
+| redis-bb.master.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| redis-bb.replica.replicaCount | int | `0` |  |
+| redis-bb.replica.containerSecurityContext.enabled | bool | `true` |  |
+| redis-bb.replica.containerSecurityContext.runAsUser | int | `1000` |  |
+| redis-bb.replica.containerSecurityContext.runAsGroup | int | `1000` |  |
+| redis-bb.replica.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| redis-bb.commonConfiguration | string | `"# Enable AOF https://redis.io/topics/persistence#append-only-file\nappendonly no\nmaxmemory 200mb\nmaxmemory-policy allkeys-lru\nsave \"\""` |  |
+| redis-bb.podLabels | object | `{}` |  |
+| redis.enabled | bool | `false` | deploy a redis statefulset |
 | redis.architecture | string | `"standalone"` | run in standalone or clustermode |
 | redis.auth.enabled | bool | `false` | enable authentication |
 | redis.metrics.enabled | bool | `false` | enable /metrics endpoint of the redis pods |
@@ -92,14 +119,37 @@ helm install gitlab-ci-pipelines-exporter chart/
 | ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
 | rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
 | domain | string | `"dev.bigbang.mil"` |  |
-| monitoring.enabled | bool | `true` |  |
-| istio.enabled | bool | `false` | Toggle istio integration |
-| networkPolicies.enabled | bool | `true` |  |
+| gitlab.gitlab-ci-pipelines-exporter.enabled | bool | `false` |  |
+| istio.enabled | bool | `false` |  |
+| istio.hardened.enabled | bool | `false` |  |
+| istio.hardened.customAuthorizationPolicies | list | `[]` |  |
+| istio.hardened.gitlab.enabled | bool | `true` |  |
+| istio.hardened.gitlab.namespaces[0] | string | `"gitlab"` |  |
+| istio.hardened.monitoring.enabled | bool | `false` |  |
+| istio.hardened.monitoring.namespaces[0] | string | `"monitoring"` |  |
+| istio.hardened.monitoring.principals[0] | string | `"cluster.local/ns/monitoring/sa/monitoring-grafana"` |  |
+| istio.hardened.monitoring.principals[1] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-alertmanager"` |  |
+| istio.hardened.monitoring.principals[2] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-operator"` |  |
+| istio.hardened.monitoring.principals[3] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-prometheus"` |  |
+| istio.hardened.monitoring.principals[4] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-state-metrics"` |  |
+| istio.hardened.monitoring.principals[5] | string | `"cluster.local/ns/monitoring/sa/monitoring-monitoring-prometheus-node-exporter"` |  |
+| istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
+| istio.hardened.customServiceEntries | list | `[]` |  |
+| istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
+| istio.injection | string | `"disabled"` |  |
+| networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
-| networkPolicies.controlPlaneCidr | string | `"0.0.0.0/0"` |  |
+| networkPolicies.additionalPolicies | list | `[]` |  |
+| monitoring.enabled | bool | `false` |  |
+| monitoring.namespace | string | `"monitoring"` |  |
 | bbtests.enabled | bool | `false` |  |
 
 ## Contributing
 
 Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in contributing.
+
+---
+
+_This file is programatically generated using `helm-docs` and some BigBang-specific templates. The `gluon` repository has [instructions for regenerating package READMEs](https://repo1.dso.mil/big-bang/product/packages/gluon/-/blob/master/docs/bb-package-readme.md)._
+
