@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: gitlab-ci-pipelines-exporter
-version: 0.3.4-bb.3
+version: 0.3.4-bb.4
 appVersion: v0.5.8
 description: Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 home: https://github.com/mvisonneau/gitlab-ci-pipelines-exporter
@@ -11,7 +11,20 @@ maintainers:
   - name: mvisonneau
     email: maxime.visonneau@gmail.com
 dependencies:
+  - name: gluon
+    version: 0.5.4
+    repository: oci://registry1.dso.mil/bigbang
   - name: redis
-    version: 18.17.0
-    repository: https://charts.bitnami.com/bitnami
-    condition: redis.enabled
+    version: 20.0.1-bb.1
+    repository: oci://registry1.dso.mil/bigbang
+    condition: redis-bb.enabled
+    alias: redis-bb
+annotations:
+  bigbang.dev/applicationVersions: |
+    - gitlab-ci-pipelines-exporter: v0.5.8
+  bigbang.dev/upstreamReleaseNotesMarkdown: |
+    The [upstream chart's release notes](https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/main/CHANGELOG.md) may help when reviewing this package.
+helm.sh/images: |
+    - name: redis
+      image: registry1.dso.mil/ironbank/bitnami/redis:7.4.0
+      condition: redis-bb.enabled

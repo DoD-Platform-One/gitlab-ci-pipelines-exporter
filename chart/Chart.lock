@@ -1,6 +1,9 @@
 dependencies:
+- name: gluon
+  repository: oci://registry1.dso.mil/bigbang
+  version: 0.5.4
 - name: redis
-  repository: https://charts.bitnami.com/bitnami
-  version: 18.17.0
-digest: sha256:72511344c1aa780d60b75b32e2ce4d5aaec6c376bc67daaf18ce52f0655ca118
-generated: "2024-03-04T14:35:20.920895+01:00"
+  repository: oci://registry1.dso.mil/bigbang
+  version: 20.0.1-bb.1
+digest: sha256:ce996eed1698ffe87a49891fdcfee459269417985574f4d72e003a4533729e6f
+generated: "2024-10-30T14:20:15.28653-04:00"

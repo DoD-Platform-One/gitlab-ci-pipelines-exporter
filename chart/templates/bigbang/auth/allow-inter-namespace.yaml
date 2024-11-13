@@ -1,4 +1,5 @@
 {{- if .Values.networkPolicies.enabled }}
+{{- $namespace := $.Release.Namespace -}}
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
@@ -9,7 +10,7 @@ spec:
   rules:
   - from:
     - source:
-        namespaces: ["gitlab-ci-pipelines-exporter"]
+        namespaces: ["{{ .Release.Namespace }}"]
   - to:
     - operation:
         methods: ['*']

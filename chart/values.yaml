@@ -148,8 +148,6 @@ envVariables:
 
 # config -- configuration of the exporter
 config:
-  gitlab:
-    url: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
   # # Complete configuration syntax reference available here:
   # # https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/master/docs/configuration_syntax.md
   # gitlab:
@@ -164,9 +162,33 @@ config:
   #   - owner:
   #       name: foo
   #       kind: group
+  gitlab:
+    url: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+    enable_health_check: false
+    health_url: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181
+  project_defaults:
+    pull:
+      refs:
+        tags:
+          most_recent: 1
+        merge_requests:
+          enabled: true
+          max_age_seconds: 28800
+  projects:
+    #- name: test/test1
+    #  pull:
+    #    pipeline:
+    #      jobs:
+    #        enabled: true
+    #    refs:
+    #      merge_requests:
+    #        enabled: true
+    #        max_age_seconds: 43200
 
 # -- name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified)
 gitlabSecret: ""
+# -- Use the below gitlabSecret if enabling a fresh deployment with gitlab
+#gitlabSecret: "gitlab-ci-exporter-token"
 
 # -- name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified)
 webhookSecret: ""
@@ -181,7 +203,7 @@ hostAliases:
 ## through the Prometheus operator: https://github.com/coreos/prometheus-operator
 serviceMonitor:
   # serviceMonitor.enabled -- deploy a serviceMonitor resource
-  enabled: true
+  enabled: false
 
   # serviceMonitor.endpoints -- endpoints configuration for the monitor
   endpoints:
@@ -204,9 +226,44 @@ serviceMonitor:
 
 ## Spin up a redis pod using the bitnami chart
 ## https://github.com/bitnami/charts/blob/master/bitnami/redis
+redis-bb:
+  enabled: true
+  auth:
+    enabled: false
+  istio:
+    redis:
+      enabled: false
+  image:
+    pullSecrets:
+      - private-registry
+  metrics:
+    enabled: true
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+  master:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+  replica:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      capabilities:
+        drop:
+        - ALL
+  commonConfiguration: |-
+    maxmemory 200mb
+    save ""
+
 redis:
   # redis.enabled -- deploy a redis statefulset
-  enabled: true
+  enabled: false
 
   # redis.architecture -- run in standalone or clustermode
   architecture: standalone
@@ -270,20 +327,68 @@ rbac:
   serviceAccount:
     name: ""
 
-## Big bang
+## Big bang additions
 domain: dev.bigbang.mil
-monitoring:
-  enabled: true
-istio:
-  # -- Toggle istio integration
+
+
+# Set this to `true` if using a fresh bigbang gitlab deployment, this will enable copying over the token
+# defined from a gitlab hook job with GCPE enabled. 
+gcpeJob:
   enabled: false
+  image: 
+    repository: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl
+    tag: 17.3.6
+    pullSecrets:
+    - name: private-registry
+    securityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+
+istio:
+  enabled: false
+  hardened:
+    enabled: false
+    customAuthorizationPolicies: []
+    # - name: "allow-nothing"
+    #   enabled: true
+    #   spec: {}
+    gitlab:
+      enabled: true
+      namespaces:
+        - gitlab
+    monitoring:
+      enabled: false
+      namespaces:
+        - monitoring
+      principals:
+        - cluster.local/ns/monitoring/sa/monitoring-grafana
+        - cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-alertmanager
+        - cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-operator
+        - cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-prometheus
+        - cluster.local/ns/monitoring/sa/monitoring-monitoring-kube-state-metrics
+        - cluster.local/ns/monitoring/sa/monitoring-monitoring-prometheus-node-exporter
+    outboundTrafficPolicyMode: "REGISTRY_ONLY"
+    customServiceEntries: []
+  mtls:
+    # -- STRICT = Allow only mutual TLS traffic,
+    # PERMISSIVE = Allow both plain text and mutual TLS traffic
+    mode: STRICT
+  injection: disabled
+
 networkPolicies:
-  enabled: true
+  enabled: false
   ingressLabels:
     app: istio-ingressgateway
     istio: ingressgateway
-  # See `kubectl cluster-info` and then resolve to IP
-  controlPlaneCidr: 0.0.0.0/0
+    # See `kubectl cluster-info` and then resolve to IP
+    controlPlaneCidr: 0.0.0.0/0
+  # Additional network policies
+  # ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
+  additionalPolicies: []
+
+monitoring:
+  enabled: false
+  namespace: monitoring
 
 bbtests:  
   enabled: false

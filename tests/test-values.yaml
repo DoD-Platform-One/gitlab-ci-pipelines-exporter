@@ -1,0 +1,41 @@
+imagePullSecrets:
+- name: private-registry
+
+#networkPolicies:
+#  enabled: true
+#  controlPlaneCidr: 172.20.0.0/29
+#  kubeAPIPort: 6443
+
+gcpeJob:
+  enabled: true
+
+config:
+  projects:
+    - name: test/test1
+      pull:
+        pipeline:
+          jobs:
+            enabled: true
+        refs:
+          merge_requests:
+            enabled: true
+            max_age_seconds: 43200
+
+# Utilize gitlab dependency fresh install token hook job.
+gitlabSecret: "gitlab-ci-exporter-token"
+
+kyverno:
+  crds:
+    install: true
+
+# Cypress testing values
+bbtests:
+  enabled: true
+  cypress:
+    resources:
+      requests:
+        cpu: 1
+        memory: "1Gi"
+      limits:
+        cpu: 2
+        memory: "2Gi"
