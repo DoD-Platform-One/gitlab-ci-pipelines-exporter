@@ -9,6 +9,6 @@ gitlab:
     timeout: 20m
   git:
     repo: "https://repo1.dso.mil/big-bang/product/packages/gitlab.git"
-    branch: "ci-exporter-testing"
+    branch: "main"
   namespace: "gitlab"
   package-name: "gitlab"

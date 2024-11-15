@@ -11,7 +11,7 @@ a fresh gitlab deployment.
 5. Sign in via SSO, and visit `Dashboards` panel.  
 6. Visit `Gitlab CI Pipelines` panel, confirm that the previously tested jobs show up.  
 7. Trigger additional pipeline(s) at https://gitlab.dev.bigbang.mil/test/test1/-/pipelines, and verify they are tracked in a `Running` or `Completed` state in grafana.
-
+8.  Once completed, be sure to update your `chart/Chart.yaml`, `CHANGELOG.md`, and `README.md`, as well as the `tests/dependencies.yaml` image and gitlab subchart tags.
 
 
 # Modifications made to upstream chart
