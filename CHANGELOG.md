@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+##[0.3.4-bb.5]] - 2024-11-14
+### Added
+- Added kubernetes api netpol for create/update/patch secret job
+- add create/update/patch verbs for hook job to secret
+
 ## [0.3.4-bb.4] - 2024-10-28
 ### Added
 - Added internal service endpoint egress policy for gitlab communication

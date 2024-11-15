@@ -1,3 +1,19 @@
+# Testing new GCPE version
+
+## GCPE dashboard
+- The following assumes a fresh gitlab development deployment on the latest tag, utilizing this packages [dev-overrides.yaml](./dev-overrides.yaml).
+1. Begin with https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version, utilizing 
+a fresh gitlab deployment.
+2. Utilize this packages [dev-overrides.yaml](./dev-overrides.yaml) in place of gitlab dev-overrides, modifying the necessary branch name for GCPE dev-overrides. Check [bigbang gitlab tag page](https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags) for latest tag.
+- If needed, modify gitlab tag in dev-overrides to your branch/desired tag for testing purposes.
+3. Follow gitlabs standard testing document, creating all necessary resources.
+4. Once group `test` and project `test1` exist with an enabled pipeline, visit https://grafana.dev.bigbang.mil
+5. Sign in via SSO, and visit `Dashboards` panel.  
+6. Visit `Gitlab CI Pipelines` panel, confirm that the previously tested jobs show up.  
+7. Trigger additional pipeline(s) at https://gitlab.dev.bigbang.mil/test/test1/-/pipelines, and verify they are tracked in a `Running` or `Completed` state in grafana.
+
+
+
 # Modifications made to upstream chart
 
 ## chart/values.yaml - GCPE gitlab configuration
@@ -66,3 +82,22 @@ redis-bb:
   ## Additional deployment labels
   podLabels: {}
   ```
+
+## chart/templates/bigbang/gitlab-exporter-token
+- Added resources that allow for spinning up a fresh gitlab instance to integrate GCPE with.  This enables a pre-install hook job to create
+a gitlab API token for use with GCPE to collect data on pipelines.
+- Added clusterrole, rolebindings for gcpe and gitlab namespaces, and SA.
+
+## chart/templates/bigbang/peerauthentication
+- Allow metrics exception for prometheus metrics scraping.
+
+## chart/templates/bigbang/networkpolicies
+- Added allows for dns, egress to gitlab internal svc endpoint, egress to https for public gitlab endpoint scraping, ingress for metrics.
+- Added default deny.
+
+## chart/templates/bigbang/auth
+- Added internamespace auth, allow metrics
+- Added default deny
+
+## chart/templates/bigbang/dashboards
+- Added gitlab grafana dashboard

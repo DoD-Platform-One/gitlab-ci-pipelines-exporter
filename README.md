@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.4](https://img.shields.io/badge/Version-0.3.4--bb.4-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
+![Version: 0.3.4-bb.5](https://img.shields.io/badge/Version-0.3.4--bb.5-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -48,7 +48,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | image.pullPolicy | string | `"IfNotPresent"` | image pullPolicy |
 | image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | image.pullCredentials | object | `{}` | Automatically create a secret with the credentials and use it Cannot be used in conjunction of image.pullSecrets |
-| customLabels | string | `nil` | Custom labels to add into metadata |
+| customLabels | object | `{}` | Custom labels to add into metadata |
 | labels | object | `{}` | additional labels for the service |
 | annotations | object | `{}` | additional annotations for the service |
 | podLabels | object | `{}` | additional labels for the pods |
@@ -75,7 +75,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | command | list | `["gitlab-ci-pipelines-exporter","run"]` | command for the exporter binary |
 | args | list | `["--config","/etc/config.yml"]` | arguments for the exporter binary |
 | envVariables | list | `[{"name":"GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS","value":"tcp://127.0.0.1:8082"}]` | environment variables for the container |
-| config | object | `{"gitlab":{"enable_health_check":false,"health_url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181","url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"},"project_defaults":{"pull":{"refs":{"merge_requests":{"enabled":true,"max_age_seconds":28800},"tags":{"most_recent":1}}}},"projects":[{"name":"test/test1","pull":{"pipeline":{"jobs":{"enabled":true}},"refs":{"merge_requests":{"enabled":true,"max_age_seconds":43200}}}}]}` | configuration of the exporter |
+| config | object | `{"gitlab":{"enable_health_check":false,"health_url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181","url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"},"project_defaults":{"pull":{"refs":{"merge_requests":{"enabled":true,"max_age_seconds":28800},"tags":{"most_recent":1}}}},"projects":null}` | configuration of the exporter |
 | gitlabSecret | string | `""` | name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified) |
 | webhookSecret | string | `""` | name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified) |
 | hostAliases | list | `[]` |  |
@@ -86,23 +86,21 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.enabled | bool | `true` |  |
 | redis-bb.auth.enabled | bool | `false` |  |
 | redis-bb.istio.redis.enabled | bool | `false` |  |
-| redis-bb.image.registry | string | `"registry1.dso.mil"` |  |
-| redis-bb.image.repository | string | `"ironbank/bitnami/redis"` |  |
-| redis-bb.image.tag | string | `"7.2.4"` |  |
 | redis-bb.image.pullSecrets[0] | string | `"private-registry"` |  |
-| redis-bb.networkPolicies.enabled | bool | `true` |  |
-| redis-bb.networkPolicies.controlPlaneCidr | string | `"0.0.0.0/0"` |  |
+| redis-bb.metrics.enabled | bool | `true` |  |
+| redis-bb.metrics.containerSecurityContext.enabled | bool | `true` |  |
+| redis-bb.metrics.containerSecurityContext.runAsUser | int | `1001` |  |
+| redis-bb.metrics.containerSecurityContext.runAsGroup | int | `1001` |  |
 | redis-bb.master.containerSecurityContext.enabled | bool | `true` |  |
-| redis-bb.master.containerSecurityContext.runAsUser | int | `1000` |  |
-| redis-bb.master.containerSecurityContext.runAsGroup | int | `1000` |  |
+| redis-bb.master.containerSecurityContext.runAsUser | int | `1001` |  |
+| redis-bb.master.containerSecurityContext.runAsGroup | int | `1001` |  |
 | redis-bb.master.containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| redis-bb.replica.replicaCount | int | `0` |  |
 | redis-bb.replica.containerSecurityContext.enabled | bool | `true` |  |
-| redis-bb.replica.containerSecurityContext.runAsUser | int | `1000` |  |
-| redis-bb.replica.containerSecurityContext.runAsGroup | int | `1000` |  |
+| redis-bb.replica.containerSecurityContext.runAsUser | int | `1001` |  |
+| redis-bb.replica.containerSecurityContext.runAsGroup | int | `1001` |  |
 | redis-bb.replica.containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| redis-bb.commonConfiguration | string | `"# Enable AOF https://redis.io/topics/persistence#append-only-file\nappendonly no\nmaxmemory 200mb\nmaxmemory-policy allkeys-lru\nsave \"\""` |  |
-| redis-bb.podLabels | object | `{}` |  |
+| redis-bb.replica.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| redis-bb.commonConfiguration | string | `"maxmemory 200mb\nsave \"\""` |  |
 | redis.enabled | bool | `false` | deploy a redis statefulset |
 | redis.architecture | string | `"standalone"` | run in standalone or clustermode |
 | redis.auth.enabled | bool | `false` | enable authentication |
@@ -119,7 +117,12 @@ helm install gitlab-ci-pipelines-exporter chart/
 | ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
 | rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
 | domain | string | `"dev.bigbang.mil"` |  |
-| gitlab.gitlab-ci-pipelines-exporter.enabled | bool | `false` |  |
+| gcpeJob.enabled | bool | `false` |  |
+| gcpeJob.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/kubectl"` |  |
+| gcpeJob.image.tag | string | `"17.3.6"` |  |
+| gcpeJob.image.pullSecrets[0].name | string | `"private-registry"` |  |
+| gcpeJob.image.securityContext.runAsUser | int | `65534` |  |
+| gcpeJob.image.securityContext.runAsGroup | int | `65534` |  |
 | istio.enabled | bool | `false` |  |
 | istio.hardened.enabled | bool | `false` |  |
 | istio.hardened.customAuthorizationPolicies | list | `[]` |  |
@@ -140,6 +143,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
+| networkPolicies.ingressLabels.controlPlaneCidr | string | `"0.0.0.0/0"` |  |
 | networkPolicies.additionalPolicies | list | `[]` |  |
 | monitoring.enabled | bool | `false` |  |
 | monitoring.namespace | string | `"monitoring"` |  |
