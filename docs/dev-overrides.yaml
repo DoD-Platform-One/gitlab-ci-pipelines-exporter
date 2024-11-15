@@ -1,0 +1,162 @@
+### Dev overrides file ###
+# This file is used for development envirnoments with k3d to deploy gitlab in order to test deployment, changes, and updates to chart and 
+# bigbang managed resources within the chart.  See [DEVELOPMENT_MAINTENANCE.MD](./DEVELOPMENT_MAINTENANCE.MD) for details regarding tests.
+##########################
+
+domain: dev.bigbang.mil
+
+flux:
+  interval: 1m
+  rollback:
+    cleanupOnFail: false
+
+networkPolicies:
+  enabled: true
+
+clusterAuditor:
+  enabled: false
+
+gatekeeper:
+  enabled: false
+
+istioOperator:
+  enabled: true
+
+istio:
+  enabled: true
+
+jaeger:
+  enabled: false
+
+kiali:
+  enabled: false
+
+elasticsearchKibana:
+  enabled: false
+
+eckOperator:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+twistlock:
+  enabled: false
+  values:
+    console:
+      persistence:
+        size: 5Gi
+
+
+
+sso:
+  oidc:
+    host: login.dso.mil
+    realm: baby-yoda
+  client_secret: ""
+
+# Package addon since this package is not officially part of bigbang umbrella, but rather a maintained addon component of bigbang gitlab.
+packages:
+  gitlab-ci-pipelines-exporter:
+    enabled: true
+    git:
+      repo: https://repo1.dso.mil/big-bang/product/maintained/gitlab-ci-pipelines-exporter.git
+      path: "./chart"
+      tag: null
+      branch: "your-development-branch-name"
+    dependsOn:
+      - name: gitlab
+        namespace: bigbang
+    values:
+      redis:
+        enabled: false
+      monitoring:
+        enabled: true
+      istio:
+        enabled: true
+        hardened:
+          enabled: true
+      serviceMonitor:
+        enabled: true
+      gcpeJob:
+        enabled: true
+      networkPolicies:
+        enabled: true
+      gitlabSecret: "gitlab-ci-exporter-token"
+      config:
+        log:
+          level: trace
+        project_defaults:
+          pull:
+            refs:
+              tags:
+                most_recent: 1
+              merge_requests:
+                enabled: true
+                max_age_seconds: 28800
+        # This project name below assumes you follow testing via the gitlab devmaint docs here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version
+        projects:
+          - name: test/test1
+            pull:
+              pipeline:
+                jobs:
+                  enabled: true
+              refs:
+                merge_requests:
+                  enabled: true
+                  max_age_seconds: 43200
+
+
+
+addons:
+
+  gitlabRunner:
+    enabled: true
+  gitlab:
+    enabled: true
+    flux:
+      timeout: 20m
+    git:
+      # Check tag for latest published version here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags
+      tag: "8.3.6-bb.3"
+      #tag: null
+      #branch: "your-development-branch-here"
+
+    hostnames:
+      gitlab: gitlab
+      registry: registry
+    sso:
+      enabled: true
+      label: "Platform One SSO"
+      client_id: "platform1_a8604cc9-f5e9-4656-802d-d05624370245_bb8-gitlab"
+      client_secret: ""
+
+    values:
+      bbtests:
+        enabled: false
+      gitlab:
+        webservice:
+          minReplicas: 1
+          maxReplicas: 1
+          helmTests:
+            enabled: false
+        gitlab-shell:
+          minReplicas: 1
+          maxReplicas: 1
+        sidekiq:
+          minReplicas: 1
+          maxReplicas: 1
+      registry:
+        hpa:
+          minReplicas: 1
+          maxReplicas: 1
+      global:
+        istio:
+          enabled:
+        serviceAccount:
+          automountServiceAccountToken: false
+        appConfig:
+          object_store:
+            enabled: true
+          defaultCanCreateGroup: true
+
