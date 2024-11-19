@@ -381,7 +381,7 @@ networkPolicies:
     app: istio-ingressgateway
     istio: ingressgateway
     # See `kubectl cluster-info` and then resolve to IP
-    controlPlaneCidr: 0.0.0.0/0
+  controlPlaneCidr: 0.0.0.0/0
   # Additional network policies
   # ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
   additionalPolicies: []

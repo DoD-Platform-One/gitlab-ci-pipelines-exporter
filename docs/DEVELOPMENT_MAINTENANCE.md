@@ -2,8 +2,11 @@
 
 ## GCPE dashboard
 - The following assumes a fresh gitlab development deployment on the latest tag, utilizing this packages [dev-overrides.yaml](./dev-overrides.yaml).
-1. Begin with https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version, utilizing 
+- Begin with https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version, utilizing 
 a fresh gitlab deployment.
+
+1. Use `kpt` to pull the upstream chart via the latest tag that corresponds to the application version. `kpt pkg update chart@gitlab-ci-pipelines-exporter-<version> --strategy alpha-git-patch`.  Review changes from upstream changelog.  Be sure to reconcile any breaking changes and Big Bang modifications if they are updated. (see: [Modifications made to upstream chart](#modifications-made-to-upstream-chart).)
+2. Update helm dependencies if needed with `helm dep update ./chart`.
 2. Utilize this packages [dev-overrides.yaml](./dev-overrides.yaml) in place of gitlab dev-overrides, modifying the necessary branch name for GCPE dev-overrides. Check [bigbang gitlab tag page](https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags) for latest tag.
 - If needed, modify gitlab tag in dev-overrides to your branch/desired tag for testing purposes.
 3. Follow gitlabs standard testing document, creating all necessary resources.
