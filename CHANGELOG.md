@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+##[0.3.4-bb.8] - 2024-11-20
+### Added
+- Added gitlab CI jobs dashboard to package default grafana gitlab dashboards
+
 ##[0.3.4-bb.7] - 2024-11-18
 ### Fixed
 - Fixed controlplaneCidr values indentation causing errors creating kube-egress-api netpol 
