@@ -9,4 +9,6 @@ metadata:
 data:
   gitlab-ci-pipelines_rev1.json: |
     {{ .Files.Get "dashboards/gitlab-ci-pipelines_rev1.json"  | nindent 4 }}
+  gitlab-ci-jobs_rev1.json: |
+    {{ .Files.Get "dashboards/gitlab-ci-jobs_rev1.json" | nindent 4 }}
 {{- end }}
