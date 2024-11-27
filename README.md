@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.8](https://img.shields.io/badge/Version-0.3.4--bb.8-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square)
+![Version: 0.3.4-bb.9](https://img.shields.io/badge/Version-0.3.4--bb.9-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square) ![Maintenance Track: unknown](https://img.shields.io/badge/Maintenance_Track-unknown-red?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -83,6 +83,22 @@ helm install gitlab-ci-pipelines-exporter chart/
 | serviceMonitor.endpoints | list | `[{"interval":"10s","port":"http","scheme":"https","tlsConfig":{"caFile":"/etc/prom-certs/root-cert.pem","certFile":"/etc/prom-certs/cert-chain.pem","insecureSkipVerify":true,"keyFile":"/etc/prom-certs/key.pem"}}]` | endpoints configuration for the monitor |
 | serviceMonitor.labels | object | `{}` | additional labels for the service monitor |
 | serviceMonitor.annotations | object | `{}` | additional annotations for the service monitor BIG BANG ADDITIONS SCHEME AND TLSCONFIG |
+| redis.enabled | bool | `false` | deploy a redis statefulset |
+| redis.architecture | string | `"standalone"` | run in standalone or clustermode |
+| redis.auth.enabled | bool | `false` | enable authentication |
+| redis.metrics.enabled | bool | `false` | enable /metrics endpoint of the redis pods |
+| redis.metrics.serviceMonitor.enabled | bool | `false` | deploy a serviceMonitor resource for the redis pods |
+| redis.master.persistence.enabled | bool | `false` | persist data |
+| ingress.enabled | bool | `false` | deploy a ingress to access the exporter pod(s) /webhook endpoint |
+| ingress.ingressClassName | object | `{}` | ingressClassName to be used instead of the deprecated annotation kubernetes.io/ingress.class |
+| ingress.annotations | string | `nil` | additional annotations for the ingress resource |
+| ingress.path | string | `"/webhook"` | path on the exporter to point the root of the ingress |
+| ingress.pathType | string | `"Prefix"` | pathType for the ingress |
+| ingress.service.port.name | string | `"http"` | service port for the ingress |
+| ingress.hosts | list | `["gcpe.example.com"]` | ingress hosts |
+| ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
+| rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
+| domain | string | `"dev.bigbang.mil"` |  |
 | redis-bb.enabled | bool | `true` |  |
 | redis-bb.auth.enabled | bool | `false` |  |
 | redis-bb.istio.redis.enabled | bool | `false` |  |
@@ -101,22 +117,6 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.replica.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | redis-bb.replica.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | redis-bb.commonConfiguration | string | `"maxmemory 200mb\nsave \"\""` |  |
-| redis.enabled | bool | `false` | deploy a redis statefulset |
-| redis.architecture | string | `"standalone"` | run in standalone or clustermode |
-| redis.auth.enabled | bool | `false` | enable authentication |
-| redis.metrics.enabled | bool | `false` | enable /metrics endpoint of the redis pods |
-| redis.metrics.serviceMonitor.enabled | bool | `false` | deploy a serviceMonitor resource for the redis pods |
-| redis.master.persistence.enabled | bool | `false` | persist data |
-| ingress.enabled | bool | `false` | deploy a ingress to access the exporter pod(s) /webhook endpoint |
-| ingress.ingressClassName | object | `{}` | ingressClassName to be used instead of the deprecated annotation kubernetes.io/ingress.class |
-| ingress.annotations | string | `nil` | additional annotations for the ingress resource |
-| ingress.path | string | `"/webhook"` | path on the exporter to point the root of the ingress |
-| ingress.pathType | string | `"Prefix"` | pathType for the ingress |
-| ingress.service.port.name | string | `"http"` | service port for the ingress |
-| ingress.hosts | list | `["gcpe.example.com"]` | ingress hosts |
-| ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
-| rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
-| domain | string | `"dev.bigbang.mil"` |  |
 | gcpeJob.enabled | bool | `false` |  |
 | gcpeJob.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/kubectl"` |  |
 | gcpeJob.image.tag | string | `"17.3.6"` |  |
