@@ -223,44 +223,6 @@ serviceMonitor:
   # BIG BANG ADDITIONS SCHEME AND TLSCONFIG
   annotations: {}
 
-
-## Spin up a redis pod using the bitnami chart
-## https://github.com/bitnami/charts/blob/master/bitnami/redis
-redis-bb:
-  enabled: true
-  auth:
-    enabled: false
-  istio:
-    redis:
-      enabled: false
-  image:
-    pullSecrets:
-      - private-registry
-  metrics:
-    enabled: true
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-  master:
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-  replica:
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-      capabilities:
-        drop:
-        - ALL
-  commonConfiguration: |-
-    maxmemory 200mb
-    save ""
-
 redis:
   # redis.enabled -- deploy a redis statefulset
   enabled: false
@@ -330,6 +292,42 @@ rbac:
 ## Big bang additions
 domain: dev.bigbang.mil
 
+# Spin up a redis pod using the bigbang redis chart
+# https://repo1.dso.mil/big-bang/product/packages/redis
+redis-bb:
+  enabled: true
+  auth:
+    enabled: false
+  istio:
+    redis:
+      enabled: false
+  image:
+    pullSecrets:
+      - private-registry
+  metrics:
+    enabled: true
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+  master:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+  replica:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      capabilities:
+        drop:
+        - ALL
+  commonConfiguration: |-
+    maxmemory 200mb
+    save ""
 
 # Set this to `true` if using a fresh bigbang gitlab deployment, this will enable copying over the token
 # defined from a gitlab hook job with GCPE enabled. 
