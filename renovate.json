@@ -6,7 +6,7 @@
     "draftPR": true,
     "enabledManagers": ["regex", "helmv3"],
     "ignorePaths": ["chart/charts/**"],
-    "labels": ["gitlab-ci-pipelines-exporter","renovate"],
+    "labels": ["gitlab-ci-pipelines-exporter","renovate","team::Development & Ops"],
     "commitMessagePrefix": "SKIP UPDATE CHECK",
     "packageRules": [
         {
