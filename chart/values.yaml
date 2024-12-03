@@ -294,29 +294,67 @@ domain: dev.bigbang.mil
 
 # Spin up a redis pod using the bigbang redis chart
 # https://repo1.dso.mil/big-bang/product/packages/redis
+# NOTE: Disabled redis-bb due to version clashing on helper template with gitlab. See implementation below commented section. 
+# The below commented implementation works as of bigbang redis:20.2.1-bb.4.
+########################################################
+#redis-bb:
+#  enabled: true
+#  auth:
+#    enabled: false
+#  istio:
+#    redis:
+#      enabled: false
+#  image:
+#    pullSecrets:
+#      - private-registry
+#  metrics:
+#    enabled: true
+#    containerSecurityContext:
+#      enabled: true
+#      runAsUser: 1001
+#      runAsGroup: 1001
+#  master:
+#    containerSecurityContext:
+#      enabled: true
+#      runAsUser: 1001
+#      runAsGroup: 1001
+#      runAsNonRoot: true
+#  replica:
+#    containerSecurityContext:
+#      enabled: true
+#      runAsUser: 1001
+#      runAsGroup: 1001
+#      runAsNonRoot: true
+#      capabilities:
+#        drop:
+#        - ALL
+#  commonConfiguration: |-
+#    maxmemory 200mb
+#    save ""
+########################################################
 redis-bb:
-  enabled: true
-  auth:
+  global:
+    imagePullSecrets:
+    - private-registry
+
+  install: true
+  architecture: standalone
+  cluster:
     enabled: false
-  istio:
-    redis:
-      enabled: false
-  image:
-    pullSecrets:
-      - private-registry
   metrics:
     enabled: true
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-  master:
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-  replica:
+    image:
+      registry: registry1.dso.mil/ironbank/bitnami
+      repository: analytics/redis-exporter
+      tag: v1.66.0
+      pullSecrets: []
+    resources:
+      limits:
+        cpu: 250m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
     containerSecurityContext:
       enabled: true
       runAsUser: 1001
@@ -324,10 +362,73 @@ redis-bb:
       runAsNonRoot: true
       capabilities:
         drop:
-        - ALL
-  commonConfiguration: |-
-    maxmemory 200mb
-    save ""
+          - ALL
+  serviceAccount:
+    automountServiceAccountToken: false
+  securityContext:
+    runAsUser: 1001
+    fsGroup: 1001
+    runAsNonRoot: true
+  image:
+    registry: registry1.dso.mil/ironbank/bitnami
+    repository: redis
+    tag: 7.4.1
+    pullSecrets: []
+  master:
+    resources:
+      limits:
+        cpu: 250m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      capabilities:
+        drop:
+          - ALL
+    resources:
+      limits:
+        cpu: 250m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      capabilities:
+        drop:
+          - ALL
+  sentinel:
+    resources:
+      limits:
+        cpu: 250m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+  volumePermissions:
+    resources:
+      limits:
+        cpu: 250m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+  sysctlImage:
+    resources:
+      limits:
+        cpu: 250m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
 
 # Set this to `true` if using a fresh bigbang gitlab deployment, this will enable copying over the token
 # defined from a gitlab hook job with GCPE enabled. 
