@@ -3,7 +3,7 @@ dependencies:
   repository: oci://registry1.dso.mil/bigbang
   version: 0.5.4
 - name: redis
-  repository: oci://registry1.dso.mil/bigbang
-  version: 20.0.1-bb.1
-digest: sha256:ce996eed1698ffe87a49891fdcfee459269417985574f4d72e003a4533729e6f
-generated: "2024-10-30T14:20:15.28653-04:00"
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.13.2
+digest: sha256:5527ed28427f8dac1cbe03251d713f88f7efce5ec2fbbdc72e6c75c67dc20633
+generated: "2024-12-03T15:00:01.016931-05:00"

@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.9](https://img.shields.io/badge/Version-0.3.4--bb.9-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.4-bb.10](https://img.shields.io/badge/Version-0.3.4--bb.10-informational?style=flat-square) ![AppVersion: v0.5.8](https://img.shields.io/badge/AppVersion-v0.5.8-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -99,24 +99,62 @@ helm install gitlab-ci-pipelines-exporter chart/
 | ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
 | rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
 | domain | string | `"dev.bigbang.mil"` |  |
-| redis-bb.enabled | bool | `true` |  |
-| redis-bb.auth.enabled | bool | `false` |  |
-| redis-bb.istio.redis.enabled | bool | `false` |  |
-| redis-bb.image.pullSecrets[0] | string | `"private-registry"` |  |
+| redis-bb.global.imagePullSecrets[0] | string | `"private-registry"` |  |
+| redis-bb.install | bool | `true` |  |
+| redis-bb.architecture | string | `"standalone"` |  |
+| redis-bb.cluster.enabled | bool | `false` |  |
 | redis-bb.metrics.enabled | bool | `true` |  |
+| redis-bb.metrics.image.registry | string | `"registry1.dso.mil/ironbank/bitnami"` |  |
+| redis-bb.metrics.image.repository | string | `"analytics/redis-exporter"` |  |
+| redis-bb.metrics.image.tag | string | `"v1.66.0"` |  |
+| redis-bb.metrics.image.pullSecrets | list | `[]` |  |
+| redis-bb.metrics.resources.limits.cpu | string | `"250m"` |  |
+| redis-bb.metrics.resources.limits.memory | string | `"256Mi"` |  |
+| redis-bb.metrics.resources.requests.cpu | string | `"250m"` |  |
+| redis-bb.metrics.resources.requests.memory | string | `"256Mi"` |  |
 | redis-bb.metrics.containerSecurityContext.enabled | bool | `true` |  |
 | redis-bb.metrics.containerSecurityContext.runAsUser | int | `1001` |  |
 | redis-bb.metrics.containerSecurityContext.runAsGroup | int | `1001` |  |
+| redis-bb.metrics.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| redis-bb.metrics.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| redis-bb.serviceAccount.automountServiceAccountToken | bool | `false` |  |
+| redis-bb.securityContext.runAsUser | int | `1001` |  |
+| redis-bb.securityContext.fsGroup | int | `1001` |  |
+| redis-bb.securityContext.runAsNonRoot | bool | `true` |  |
+| redis-bb.image.registry | string | `"registry1.dso.mil/ironbank/bitnami"` |  |
+| redis-bb.image.repository | string | `"redis"` |  |
+| redis-bb.image.tag | string | `"7.4.1"` |  |
+| redis-bb.image.pullSecrets | list | `[]` |  |
+| redis-bb.master.resources.limits.cpu | string | `"250m"` |  |
+| redis-bb.master.resources.limits.memory | string | `"256Mi"` |  |
+| redis-bb.master.resources.requests.cpu | string | `"250m"` |  |
+| redis-bb.master.resources.requests.memory | string | `"256Mi"` |  |
 | redis-bb.master.containerSecurityContext.enabled | bool | `true` |  |
 | redis-bb.master.containerSecurityContext.runAsUser | int | `1001` |  |
 | redis-bb.master.containerSecurityContext.runAsGroup | int | `1001` |  |
 | redis-bb.master.containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| redis-bb.replica.containerSecurityContext.enabled | bool | `true` |  |
-| redis-bb.replica.containerSecurityContext.runAsUser | int | `1001` |  |
-| redis-bb.replica.containerSecurityContext.runAsGroup | int | `1001` |  |
-| redis-bb.replica.containerSecurityContext.runAsNonRoot | bool | `true` |  |
-| redis-bb.replica.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| redis-bb.commonConfiguration | string | `"maxmemory 200mb\nsave \"\""` |  |
+| redis-bb.master.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| redis-bb.master.resources.limits.cpu | string | `"250m"` |  |
+| redis-bb.master.resources.limits.memory | string | `"256Mi"` |  |
+| redis-bb.master.resources.requests.cpu | string | `"250m"` |  |
+| redis-bb.master.resources.requests.memory | string | `"256Mi"` |  |
+| redis-bb.master.containerSecurityContext.enabled | bool | `true` |  |
+| redis-bb.master.containerSecurityContext.runAsUser | int | `1001` |  |
+| redis-bb.master.containerSecurityContext.runAsGroup | int | `1001` |  |
+| redis-bb.master.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| redis-bb.master.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| redis-bb.sentinel.resources.limits.cpu | string | `"250m"` |  |
+| redis-bb.sentinel.resources.limits.memory | string | `"256Mi"` |  |
+| redis-bb.sentinel.resources.requests.cpu | string | `"250m"` |  |
+| redis-bb.sentinel.resources.requests.memory | string | `"256Mi"` |  |
+| redis-bb.volumePermissions.resources.limits.cpu | string | `"250m"` |  |
+| redis-bb.volumePermissions.resources.limits.memory | string | `"256Mi"` |  |
+| redis-bb.volumePermissions.resources.requests.cpu | string | `"250m"` |  |
+| redis-bb.volumePermissions.resources.requests.memory | string | `"256Mi"` |  |
+| redis-bb.sysctlImage.resources.limits.cpu | string | `"250m"` |  |
+| redis-bb.sysctlImage.resources.limits.memory | string | `"256Mi"` |  |
+| redis-bb.sysctlImage.resources.requests.cpu | string | `"250m"` |  |
+| redis-bb.sysctlImage.resources.requests.memory | string | `"256Mi"` |  |
 | gcpeJob.enabled | bool | `false` |  |
 | gcpeJob.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/kubectl"` |  |
 | gcpeJob.image.tag | string | `"17.3.6"` |  |
