@@ -20,6 +20,7 @@ dependencies:
     condition: redis-bb.enabled
     alias: redis-bb
 annotations:
+  bigbang.dev/maintenanceTrack: bb_maintained
   bigbang.dev/applicationVersions: |
     - gitlab-ci-pipelines-exporter: v0.5.8
   bigbang.dev/upstreamReleaseNotesMarkdown: |
