@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Added renovate definitions
 - Moved redis-bb values to bigbang additions section in values.yaml
+- Added the maintenance track annotation and badge
 
 ##[0.3.4-bb.8] - 2024-11-20
 ### Added
