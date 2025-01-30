@@ -6,7 +6,7 @@ You can find more information [on GitLab docs](https://docs.gitlab.com/ee/ci/pip
 
 ### Prerequisites
 
-`gitlab-ci-pipelines-exporter` requires a gitlab endpoint to monitor against, defined via an API endpoint at `.Values.config.gitlab.url` in the [values.yaml](../chart/values.yaml) file.  This requires a gitlab token that has API and read_repository permissions.  See https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/master/docs/configuration_syntax.md for details regarding additional configuration settings. 
+`gitlab-ci-pipelines-exporter` requires a gitlab endpoint to monitor against, defined via an API endpoint at `.Values.config.gitlab.url` in the [values.yaml](../chart/values.yaml) file.  This requires a gitlab token that has API and read_repository permissions.  See <https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/master/docs/configuration_syntax.md> for details regarding additional configuration settings.
 
 ### Getting Started
 

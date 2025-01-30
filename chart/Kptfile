@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: 5defaead8cd86acce7a36e9bd53761acf2d85cf4
+    commit: c4e4686f516839c6c4965bab839df1b1c4a1c649
     repo: https://github.com/mvisonneau/helm-charts
     directory: /charts/gitlab-ci-pipelines-exporter
-    ref: gitlab-ci-pipelines-exporter-0.3.4
+    ref: gitlab-ci-pipelines-exporter-0.3.5
