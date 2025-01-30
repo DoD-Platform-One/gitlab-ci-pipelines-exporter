@@ -1,5 +1,5 @@
 ### Dev overrides file ###
-# This file is used for development envirnoments with k3d to deploy gitlab in order to test deployment, changes, and updates to chart and 
+# This file is used for development envirnoments with k3d to deploy gitlab in order to test deployment, changes, and updates to chart and
 # bigbang managed resources within the chart.  See [DEVELOPMENT_MAINTENANCE.MD](./DEVELOPMENT_MAINTENANCE.MD) for details regarding tests.
 ##########################
 
@@ -47,7 +47,26 @@ twistlock:
       persistence:
         size: 5Gi
 
+monitoring:
+  enabled: true
 
+grafana:
+  enabled: true
+
+# Needed to get gitlab runner's up and running
+kyverno:
+  enabled: true
+
+kyvernoPolicies:
+  enabled: true
+  values:
+    policies:
+      require-non-root-group:
+        exclude:
+          any:
+            - resources:
+                namespaces:
+                  - gitlab-runner
 
 sso:
   oidc:
@@ -106,19 +125,20 @@ packages:
                   enabled: true
                   max_age_seconds: 43200
 
-
-
 addons:
 
   gitlabRunner:
     enabled: true
+    values:
+      autoRegister:
+        enabled: true
   gitlab:
     enabled: true
     flux:
       timeout: 20m
     git:
       # Check tag for latest published version here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags
-      tag: "8.3.6-bb.3"
+      tag: "8.8.1-bb.0"
       #tag: null
       #branch: "your-development-branch-here"
 
@@ -159,4 +179,3 @@ addons:
           object_store:
             enabled: true
           defaultCanCreateGroup: true
-

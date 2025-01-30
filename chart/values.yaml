@@ -7,7 +7,7 @@ replicas: 1
 image:
   # image.repository -- image repository
   repository: "registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"
-  tag: "v0.5.9"
+  tag: "v0.5.10"
 
 
   # image.tag -- image tag

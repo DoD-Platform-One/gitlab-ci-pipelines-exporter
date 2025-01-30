@@ -1,14 +1,14 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.4-bb.12](https://img.shields.io/badge/Version-0.3.4--bb.12-informational?style=flat-square) ![AppVersion: v0.5.9](https://img.shields.io/badge/AppVersion-v0.5.9-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.5-bb.0](https://img.shields.io/badge/Version-0.3.5--bb.0-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
 ## Upstream References
-- <https://github.com/mvisonneau/gitlab-ci-pipelines-exporter>
 
-* <https://github.com/mvisonneau/helm-charts/tree/main/charts/gitlab-ci-pipelines-exporter>
+- <https://github.com/mvisonneau/gitlab-ci-pipelines-exporter>
+- <https://github.com/mvisonneau/helm-charts/tree/main/charts/gitlab-ci-pipelines-exporter>
 
 ## Upstream Release Notes
 
@@ -27,7 +27,7 @@ The [upstream chart's release notes](https://github.com/mvisonneau/gitlab-ci-pip
 
 Install Helm
 
-https://helm.sh/docs/intro/install/
+<https://helm.sh/docs/intro/install/>
 
 ## Deployment
 
@@ -44,9 +44,9 @@ helm install gitlab-ci-pipelines-exporter chart/
 |-----|------|---------|-------------|
 | replicas | int | `1` | amount of desired pod(s) replica(s) |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"` | image repository |
-| image.tag | string | `"v0.5.9"` | image tag tag: <default to chart version> |
+| image.tag | string | `"v0.5.10"` | image tag tag: <default to chart version> |
 | image.pullPolicy | string | `"IfNotPresent"` | image pullPolicy |
-| image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
+| image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: <https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/> |
 | image.pullCredentials | object | `{}` | Automatically create a secret with the credentials and use it Cannot be used in conjunction of image.pullSecrets |
 | customLabels | object | `{}` | Custom labels to add into metadata |
 | labels | object | `{}` | additional labels for the service |
@@ -67,11 +67,11 @@ helm install gitlab-ci-pipelines-exporter chart/
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.periodSeconds | int | `30` |  |
-| nodeSelector | object | `{}` | node selector for pod assignment # ref: https://kubernetes.io/docs/user-guide/node-selection/ |
-| tolerations | list | `[]` | tolerations for pod assignment # ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
-| affinity | object | `{}` | affinity for pod assignment # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity |
-| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the pods # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context BIG BANG ADDITIONS |
-| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the containers # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context |
+| nodeSelector | object | `{}` | node selector for pod assignment # ref: <https://kubernetes.io/docs/user-guide/node-selection/> |
+| tolerations | list | `[]` | tolerations for pod assignment # ref: <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/> |
+| affinity | object | `{}` | affinity for pod assignment # ref: <https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity> |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the pods # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context> BIG BANG ADDITIONS |
+| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the containers # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context> |
 | command | list | `["gitlab-ci-pipelines-exporter","run"]` | command for the exporter binary |
 | args | list | `["--config","/etc/config.yml"]` | arguments for the exporter binary |
 | envVariables | list | `[{"name":"GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS","value":"tcp://127.0.0.1:8082"}]` | environment variables for the container |
@@ -194,4 +194,3 @@ Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in 
 ---
 
 _This file is programatically generated using `helm-docs` and some BigBang-specific templates. The `gluon` repository has [instructions for regenerating package READMEs](https://repo1.dso.mil/big-bang/product/packages/gluon/-/blob/master/docs/bb-package-readme.md)._
-
