@@ -4,7 +4,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [0.3.0-bb.0] - 2024-01-28
+## [0.3.6-bb.0] - 2025-04-01
+
+### Changed
+
+- Update redis upstream to BB maintained redis
+- Update redis-exporter to v1.69.0
+- Update redis to 7.4.2
+- Update gluon to 0.5.15
+
+## [0.3.5-bb.0] - 2025-01-28
 
 ### Changed
 
