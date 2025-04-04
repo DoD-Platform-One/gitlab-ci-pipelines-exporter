@@ -138,7 +138,7 @@ addons:
       timeout: 20m
     git:
       # Check tag for latest published version here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags
-      tag: "8.8.1-bb.0"
+      tag: "8.10.1-bb.0"
       #tag: null
       #branch: "your-development-branch-here"
 
