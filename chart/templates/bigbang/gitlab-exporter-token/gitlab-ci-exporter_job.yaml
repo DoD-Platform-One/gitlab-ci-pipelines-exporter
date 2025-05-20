@@ -35,11 +35,16 @@ spec:
       containers:
       - name: gitlab-exporter-token
         image: {{ .Values.gcpeJob.image.repository }}:{{ .Values.gcpeJob.image.tag }}
+        env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
         command: ["/bin/bash"]
         args:
             - -c
             - >-
-              token_string=$(head -c 128 /dev/urandom | sha256sum | head -c 32 | awk '{print "glpat-"$1}') && kubectl -n gitlab exec -ti deploy/gitlab-toolbox -- gitlab-rails runner "t=User.find_by_username('root').personal_access_tokens.new(name: 'ci-exporter-token', scopes:['api'], expires_at: 1.year.from_now.utc); t.set_token('${token_string}'); t.save" && kubectl create secret -n gitlab-ci-pipelines-exporter generic gitlab-ci-exporter-token --from-literal=gitlabToken=${token_string} --dry-run=client -o yaml | kubectl apply -f -
+              token_string=$(head -c 128 /dev/urandom | sha256sum | head -c 32 | awk '{print "glpat-"$1}') && kubectl -n gitlab exec -ti deploy/gitlab-toolbox -- gitlab-rails runner "t=User.find_by_username('root').personal_access_tokens.new(name: 'ci-exporter-token', scopes:['api'], expires_at: 1.year.from_now.utc); t.set_token('${token_string}'); t.save" && kubectl create secret -n ${POD_NAMESPACE} generic gitlab-ci-exporter-token --from-literal=gitlabToken=${token_string} --dry-run=client -o yaml | kubectl apply -f -
         securityContext:
           runAsNonRoot: true
           runAsUser: 1001

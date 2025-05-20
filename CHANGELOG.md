@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.1] - 2025-05-16
+
+### Changed
+
+- Update gitlab api token job to use live-in namespace instead of hardcoded to honor namespace deployment modification
+
 ## [0.3.6-bb.0] - 2025-04-01
 
 ### Changed
