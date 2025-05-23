@@ -344,8 +344,8 @@ redis-bb:
   metrics:
     enabled: true
     image:
-      registry: registry1.dso.mil/ironbank/bitnami
-      repository: analytics/redis-exporter
+      registry: registry1.dso.mil
+      repository: ironbank/bitnami/analytics/redis-exporter
       tag: v1.69.0
       pullSecrets: []
     resources:
@@ -370,8 +370,8 @@ redis-bb:
     fsGroup: 1001
     runAsNonRoot: true
   image:
-    registry: registry1.dso.mil/ironbank/bitnami
-    repository: redis
+    registry: registry1.dso.mil
+    repository: ironbank/bitnami/redis
     tag: 7.4.2
     pullSecrets: []
   master:
