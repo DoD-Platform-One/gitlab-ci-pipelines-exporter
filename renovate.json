@@ -19,22 +19,17 @@
         {
             "fileMatch": ["^chart/values\\.yaml$"],
             "matchStrings": [
-                "image:\\s+(?:#.*\\n\\s+)?repository:\\s+[^/]+/(?<depName>.+)\\s+(?:#.*\\n\\s+)tag:\\s+(?<currentValue>.+)"
+                "image:\\s+(?:#.*\\n\\s+)?repository:\\s+[^/]+/(?<depName>.+)\\s+(?:#.*\\n\\s+)tag:\\s+(?<currentValue>.+)",
+                "registry:\\s(?<registry>.+)\\s+repository:.(?<depName>.+)\\s+tag:\\s+(?<currentValue>.+)",
+                "repository:.(?<depName>.+)\\s+tag:\\s+(?<currentValue>.+)",
+                "repository:.(?<depName>.+)\\s+tag:\\s+\"(?<currentValue>.+)\""
             ],
             "datasourceTemplate": "docker"
         },
         {
             "fileMatch": ["^chart/Chart\\.yaml$"],
             "matchStrings": [
-                "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)"
-            ],
-            "depNameTemplate": "registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter",
-            "datasourceTemplate": "docker"
-        },
-
-        {
-            "fileMatch": ["^chart/Chart\\.yaml$"],
-            "matchStrings": [
+                "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)",
                 "- gitlab-ci-pipelines-exporter:\\s+(?<currentValue>.+)"
             ],
             "depNameTemplate": "registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter",
@@ -54,7 +49,6 @@
             "matchStrings": [
                 "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
             ],
-            "depNameTemplate": "registry1.dso.mil/ironbank/bitnami/redis",
             "datasourceTemplate": "docker"
         }
     ],

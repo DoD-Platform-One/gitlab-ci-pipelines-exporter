@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.1](https://img.shields.io/badge/Version-0.3.6--bb.1-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.2](https://img.shields.io/badge/Version-0.3.6--bb.2-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -44,7 +44,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 |-----|------|---------|-------------|
 | replicas | int | `1` | amount of desired pod(s) replica(s) |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"` | image repository |
-| image.tag | string | `"v0.5.10"` | image tag tag: <default to chart version> |
+| image.tag | string | `"v0.5.10"` | image tag `tag: <default to chart version>` |
 | image.pullPolicy | string | `"IfNotPresent"` | image pullPolicy |
 | image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | image.pullCredentials | object | `{}` | Automatically create a secret with the credentials and use it Cannot be used in conjunction of image.pullSecrets |
@@ -104,8 +104,8 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.architecture | string | `"standalone"` |  |
 | redis-bb.cluster.enabled | bool | `false` |  |
 | redis-bb.metrics.enabled | bool | `true` |  |
-| redis-bb.metrics.image.registry | string | `"registry1.dso.mil/ironbank/bitnami"` |  |
-| redis-bb.metrics.image.repository | string | `"analytics/redis-exporter"` |  |
+| redis-bb.metrics.image.registry | string | `"registry1.dso.mil"` |  |
+| redis-bb.metrics.image.repository | string | `"ironbank/bitnami/analytics/redis-exporter"` |  |
 | redis-bb.metrics.image.tag | string | `"v1.69.0"` |  |
 | redis-bb.metrics.image.pullSecrets | list | `[]` |  |
 | redis-bb.metrics.resources.limits.cpu | string | `"250m"` |  |
@@ -121,8 +121,8 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.securityContext.runAsUser | int | `1001` |  |
 | redis-bb.securityContext.fsGroup | int | `1001` |  |
 | redis-bb.securityContext.runAsNonRoot | bool | `true` |  |
-| redis-bb.image.registry | string | `"registry1.dso.mil/ironbank/bitnami"` |  |
-| redis-bb.image.repository | string | `"redis"` |  |
+| redis-bb.image.registry | string | `"registry1.dso.mil"` |  |
+| redis-bb.image.repository | string | `"ironbank/bitnami/redis"` |  |
 | redis-bb.image.tag | string | `"7.4.2"` |  |
 | redis-bb.image.pullSecrets | list | `[]` |  |
 | redis-bb.master.resources.limits.cpu | string | `"250m"` |  |
