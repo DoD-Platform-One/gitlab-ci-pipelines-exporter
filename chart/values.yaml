@@ -346,7 +346,7 @@ redis-bb:
     image:
       registry: registry1.dso.mil
       repository: ironbank/bitnami/analytics/redis-exporter
-      tag: v1.69.0
+      tag: v1.73.0
       pullSecrets: []
     resources:
       limits:
@@ -372,24 +372,9 @@ redis-bb:
   image:
     registry: registry1.dso.mil
     repository: ironbank/bitnami/redis
-    tag: 7.4.2
+    tag: 8.0.1
     pullSecrets: []
   master:
-    resources:
-      limits:
-        cpu: 250m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
     resources:
       limits:
         cpu: 250m
@@ -436,7 +421,7 @@ gcpeJob:
   enabled: false
   image: 
     repository: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl
-    tag: 17.3.6
+    tag: 18.0.1
     pullSecrets:
     - name: private-registry
     securityContext:
