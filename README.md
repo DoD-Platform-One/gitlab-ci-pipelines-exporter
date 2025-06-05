@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.3](https://img.shields.io/badge/Version-0.3.6--bb.3-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.4](https://img.shields.io/badge/Version-0.3.6--bb.4-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -123,7 +123,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.securityContext.runAsNonRoot | bool | `true` |  |
 | redis-bb.image.registry | string | `"registry1.dso.mil"` |  |
 | redis-bb.image.repository | string | `"ironbank/bitnami/redis"` |  |
-| redis-bb.image.tag | string | `"8.0.1"` |  |
+| redis-bb.image.tag | string | `"8.0.2"` |  |
 | redis-bb.image.pullSecrets | list | `[]` |  |
 | redis-bb.master.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.master.resources.limits.memory | string | `"256Mi"` |  |
