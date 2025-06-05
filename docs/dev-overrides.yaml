@@ -13,19 +13,22 @@ flux:
 networkPolicies:
   enabled: true
 
-clusterAuditor:
-  enabled: false
-
 gatekeeper:
   enabled: false
 
-istioOperator:
+istiod:
+  enabled: true
+
+istioCRDs:
+  enabled: true
+
+istioGateway:
   enabled: true
 
 istio:
-  enabled: true
+  enabled: false
 
-jaeger:
+istioOperator:
   enabled: false
 
 kiali:
@@ -82,7 +85,7 @@ packages:
       repo: https://repo1.dso.mil/big-bang/product/maintained/gitlab-ci-pipelines-exporter.git
       path: "./chart"
       tag: null
-      branch: "your-development-branch-name"
+      branch: "renovate/ironbank"
     dependsOn:
       - name: gitlab
         namespace: bigbang
@@ -91,10 +94,10 @@ packages:
         enabled: false
       monitoring:
         enabled: true
-      istio:
-        enabled: true
-        hardened:
-          enabled: true
+      # istio:
+      #   enabled: true
+      #   hardened:
+      #     enabled: true
       serviceMonitor:
         enabled: true
       gcpeJob:
@@ -132,13 +135,17 @@ addons:
     values:
       autoRegister:
         enabled: true
+      # networkPolicies:
+      #   enabled: true
+      #   controlPlaneCidr: 172.20.0.0/29
+      #   kubeAPIPort: 6443
   gitlab:
     enabled: true
     flux:
       timeout: 20m
     git:
       # Check tag for latest published version here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags
-      tag: "8.10.1-bb.0"
+      tag: "9.0.1-bb.1"
       #tag: null
       #branch: "your-development-branch-here"
 
@@ -171,8 +178,8 @@ addons:
           minReplicas: 1
           maxReplicas: 1
       global:
-        istio:
-          enabled:
+        # istio:
+        #   enabled:
         serviceAccount:
           automountServiceAccountToken: false
         appConfig:
