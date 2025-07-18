@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [0.3.6-bb.6] - 2025-07-17
+
+- Update BB redis chart 21.1.3-bb.0 -> 21.2.9-bb.0
+- Update gluon 0.6.2 -> 0.7.0
+- Update redis-exporter v1.73.0 -> v1.74.0
+- Update redis 8.0.2 -> 8.0.3
+- Update kubectl 18.0.1 -> 18.1.2
+- Fix renovate issue that creates two MRs for one renovate.
+
 ## [0.3.6-bb.5] - 2025-06-06
 
 - Update BB redis chart to 21.1.3-bb.0
