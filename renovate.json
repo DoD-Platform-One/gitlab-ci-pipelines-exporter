@@ -10,7 +10,7 @@
     "commitMessagePrefix": "SKIP UPDATE CHECK",
     "packageRules": [
         {
-            "matchDatasources": ["docker"],
+            "matchDatasources": ["docker", "git-tags"],
             "groupName": "Ironbank",
             "registryUrls": ["https://registry1.dso.mil"]
         }

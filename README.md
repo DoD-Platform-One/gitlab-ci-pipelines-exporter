@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.5](https://img.shields.io/badge/Version-0.3.6--bb.5-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.6](https://img.shields.io/badge/Version-0.3.6--bb.6-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -106,7 +106,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.metrics.enabled | bool | `true` |  |
 | redis-bb.metrics.image.registry | string | `"registry1.dso.mil"` |  |
 | redis-bb.metrics.image.repository | string | `"ironbank/bitnami/analytics/redis-exporter"` |  |
-| redis-bb.metrics.image.tag | string | `"v1.73.0"` |  |
+| redis-bb.metrics.image.tag | string | `"v1.74.0"` |  |
 | redis-bb.metrics.image.pullSecrets | list | `[]` |  |
 | redis-bb.metrics.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.metrics.resources.limits.memory | string | `"256Mi"` |  |
@@ -123,7 +123,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.securityContext.runAsNonRoot | bool | `true` |  |
 | redis-bb.image.registry | string | `"registry1.dso.mil"` |  |
 | redis-bb.image.repository | string | `"ironbank/bitnami/redis"` |  |
-| redis-bb.image.tag | string | `"8.0.2"` |  |
+| redis-bb.image.tag | string | `"8.0.3"` |  |
 | redis-bb.image.pullSecrets | list | `[]` |  |
 | redis-bb.master.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.master.resources.limits.memory | string | `"256Mi"` |  |
@@ -148,7 +148,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.sysctlImage.resources.requests.memory | string | `"256Mi"` |  |
 | gcpeJob.enabled | bool | `false` |  |
 | gcpeJob.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/kubectl"` |  |
-| gcpeJob.image.tag | string | `"18.0.1"` |  |
+| gcpeJob.image.tag | string | `"18.1.2"` |  |
 | gcpeJob.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | gcpeJob.image.securityContext.runAsUser | int | `65534` |  |
 | gcpeJob.image.securityContext.runAsGroup | int | `65534` |  |
