@@ -4,7 +4,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.7] - 2025-08-25
+
+### Changed
+
+- Update gluon 0.6.3 -> 0.8.0
+- Update BB redis chart 21.2.9-bb.0 -> 22.0.3-bb.0
+- Update redis-exporter v1.74.0 -> v1.75.0
+- Update redis 8.0.3 -> 8.2.0
+- Update kubectl 18.1.2 -> 18.2.2
+
+
 ## [0.3.6-bb.6] - 2025-07-17
+
+### Changed
 
 - Update BB redis chart 21.1.3-bb.0 -> 21.2.9-bb.0
 - Update gluon 0.6.2 -> 0.7.0
@@ -14,6 +27,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Fix renovate issue that creates two MRs for one renovate.
 
 ## [0.3.6-bb.5] - 2025-06-06
+
+### Changed
 
 - Update BB redis chart to 21.1.3-bb.0
 

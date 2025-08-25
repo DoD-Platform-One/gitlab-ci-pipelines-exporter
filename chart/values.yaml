@@ -333,87 +333,90 @@ domain: dev.bigbang.mil
 #    save ""
 ########################################################
 redis-bb:
-  global:
-    imagePullSecrets:
-    - private-registry
+  upstream:
+    auth:
+      enabled: false
+    global:
+      imagePullSecrets:
+      - private-registry
 
-  install: true
-  architecture: standalone
-  cluster:
-    enabled: false
-  metrics:
-    enabled: true
+    install: true
+    architecture: standalone
+    cluster:
+      enabled: false
+    metrics:
+      enabled: true
+      image:
+        registry: registry1.dso.mil
+        repository: ironbank/bitnami/analytics/redis-exporter
+        tag: v1.75.0
+        pullSecrets: []
+      resources:
+        limits:
+          cpu: 250m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
+      containerSecurityContext:
+        enabled: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+    serviceAccount:
+      automountServiceAccountToken: false
+    securityContext:
+      runAsUser: 1001
+      fsGroup: 1001
+      runAsNonRoot: true
     image:
       registry: registry1.dso.mil
-      repository: ironbank/bitnami/analytics/redis-exporter
-      tag: v1.74.0
+      repository: ironbank/bitnami/redis
+      tag: 8.2.0
       pullSecrets: []
-    resources:
-      limits:
-        cpu: 250m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
-  serviceAccount:
-    automountServiceAccountToken: false
-  securityContext:
-    runAsUser: 1001
-    fsGroup: 1001
-    runAsNonRoot: true
-  image:
-    registry: registry1.dso.mil
-    repository: ironbank/bitnami/redis
-    tag: 8.0.3
-    pullSecrets: []
-  master:
-    resources:
-      limits:
-        cpu: 250m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
-  sentinel:
-    resources:
-      limits:
-        cpu: 250m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-  volumePermissions:
-    resources:
-      limits:
-        cpu: 250m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
-  sysctlImage:
-    resources:
-      limits:
-        cpu: 250m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 256Mi
+    master:
+      resources:
+        limits:
+          cpu: 250m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
+      containerSecurityContext:
+        enabled: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+    sentinel:
+      resources:
+        limits:
+          cpu: 250m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
+    volumePermissions:
+      resources:
+        limits:
+          cpu: 250m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
+    sysctlImage:
+      resources:
+        limits:
+          cpu: 250m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 256Mi
 
 # Set this to `true` if using a fresh bigbang gitlab deployment, this will enable copying over the token
 # defined from a gitlab hook job with GCPE enabled. 
@@ -421,7 +424,7 @@ gcpeJob:
   enabled: false
   image: 
     repository: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl
-    tag: 18.1.2
+    tag: 18.2.2
     pullSecrets:
     - name: private-registry
     securityContext:
