@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.9] - 2025-09-02
+
+### Changed
+
+- - Updated NetworkPolicy template allow-istiod-egress for istio operator-less label
+
 ## [0.3.6-bb.8] - 2025-08-29
 
 ### Changed
