@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.10] - 2025-09-04
+
+### Changed
+
+- Update BB redis chart 22.0.4-bb.0 -> 22.0.7-bb.0
+
+
 ## [0.3.6-bb.9] - 2025-09-02
 
 ### Changed
