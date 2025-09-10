@@ -18,11 +18,11 @@
         "renovate",
         "team::Development & Ops"
     ],
-    "commitMessagePrefix": "SKIP UPDATE CHECK",
     "packageRules": [
         {
             "matchDatasources": [
-                "docker"
+                "docker",
+                "git-tags"
             ],
             "groupName": "Ironbank",
             "registryUrls": [
