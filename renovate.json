@@ -33,8 +33,8 @@
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": [
-                "^chart/values\\.yaml$"
+            "managerFilePatterns": [
+                "/^chart/values\\.yaml$/"
             ],
             "matchStrings": [
                 "image:\\s+(?:#.*\\n\\s+)?repository:\\s+[^/]+/(?<depName>.+)\\s+(?:#.*\\n\\s+)tag:\\s+(?<currentValue>.+)",
@@ -45,8 +45,8 @@
         },
         {
             "customType": "regex",
-            "fileMatch": [
-                "^chart/Chart\\.yaml$"
+            "managerFilePatterns": [
+                "/^chart/Chart\\.yaml$/"
             ],
             "matchStrings": [
                 "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)",
@@ -57,8 +57,8 @@
         },
         {
             "customType": "regex",
-            "fileMatch": [
-                "^chart/Chart\\.yaml$"
+            "managerFilePatterns": [
+                "/^chart/Chart\\.yaml$/"
             ],
             "matchStrings": [
                 "name:\\s+redis\\s*\\n\\s*version:\\s+(?<currentValue>\\d+\\.\\d+\\.\\d+-bb\\.\\d+)"
@@ -69,8 +69,8 @@
         },
         {
             "customType": "regex",
-            "fileMatch": [
-                "^chart/Chart\\.yaml$"
+            "managerFilePatterns": [
+                "/^chart/Chart\\.yaml$/"
             ],
             "matchStrings": [
                 "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
@@ -80,4 +80,3 @@
     ],
     "separateMajorMinor": false
 }
-
