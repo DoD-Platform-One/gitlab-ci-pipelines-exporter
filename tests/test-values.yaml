@@ -1,41 +1,57 @@
-imagePullSecrets:
-- name: private-registry
-
-#networkPolicies:
-#  enabled: true
-#  controlPlaneCidr: 172.20.0.0/29
-#  kubeAPIPort: 6443
-
-gcpeJob:
-  enabled: true
-
-config:
-  projects:
-    - name: test/test1
-      pull:
-        pipeline:
-          jobs:
-            enabled: true
-        refs:
-          merge_requests:
-            enabled: true
-            max_age_seconds: 43200
-
-# Utilize gitlab dependency fresh install token hook job.
-gitlabSecret: "gitlab-ci-exporter-token"
-
 kyverno:
-  crds:
-    install: true
-
-# Cypress testing values
-bbtests:
   enabled: true
-  cypress:
-    resources:
-      requests:
-        cpu: 1
-        memory: "1Gi"
-      limits:
-        cpu: 2
-        memory: "2Gi"
+# Package addon since this package is not officially part of bigbang umbrella, but rather a maintained addon component of bigbang gitlab.
+packages:
+  gitlab-ci-pipelines-exporter:
+    namespace:
+      name: gitlab
+    helmRelease:
+      namespace: "bigbang"
+    enabled: true
+    sourceType: "git"
+    git:
+      repo: https://repo1.dso.mil/big-bang/product/maintained/gitlab-ci-pipelines-exporter.git
+      branch: "main"
+      path: "./chart"
+      tag: ""
+    values:
+      bbtests:
+        enabled: true
+      gitlab-ci-pipelines-exporter:
+        redis:
+          enabled: false
+        monitoring:
+          enabled: true
+        # istio:
+        #   enabled: true
+        #   hardened:
+        #     enabled: true
+        serviceMonitor:
+          enabled: true
+        gcpeJob:
+          enabled: true
+        networkPolicies:
+          enabled: true
+        gitlabSecret: "gitlab-ci-exporter-token"
+        config:
+          log:
+            level: trace
+          project_defaults:
+            pull:
+              refs:
+                tags:
+                  most_recent: 1
+                merge_requests:
+                  enabled: true
+                  max_age_seconds: 28800
+              # This project name below assumes you follow testing via the gitlab devmaint docs here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version
+              projects:
+                - name: test/test1
+                  pull:
+                    pipeline:
+                      jobs:
+                        enabled: true
+                    refs:
+                      merge_requests:
+                        enabled: true
+                        max_age_seconds: 43200
