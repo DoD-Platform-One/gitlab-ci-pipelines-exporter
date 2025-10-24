@@ -1,57 +1,120 @@
+monitoring:
+  enabled: true
+
+grafana:
+  enabled: true
+
 kyverno:
   enabled: true
+
+kyvernoPolicies:
+  enabled: true
+  values:
+    policies:
+      require-non-root-group:
+        exclude:
+          any:
+            - resources:
+                namespaces:
+                  - gitlab-runner
+
 # Package addon since this package is not officially part of bigbang umbrella, but rather a maintained addon component of bigbang gitlab.
 packages:
   gitlab-ci-pipelines-exporter:
     namespace:
+      create: false
       name: gitlab
+      createRegistrySecret: false # Don't create private-registry secret
     helmRelease:
       namespace: "bigbang"
     enabled: true
     sourceType: "git"
     git:
       repo: https://repo1.dso.mil/big-bang/product/maintained/gitlab-ci-pipelines-exporter.git
-      branch: "main"
-      path: "./chart"
-      tag: ""
+    dependsOn:
+      - name: gitlab
+        namespace: bigbang
     values:
+      redis-bb:
+        enabled: true
+        auth:
+          enabled: false
+        istio:
+          redis:
+            enabled: false
+        image:
+          pullSecrets:
+            - private-registry
+        metrics:
+          enabled: true
+          containerSecurityContext:
+            enabled: true
+            runAsUser: 1001
+            runAsGroup: 1001
+        master:
+          containerSecurityContext:
+            enabled: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            runAsNonRoot: true
+        replica:
+          containerSecurityContext:
+            enabled: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            runAsNonRoot: true
+            capabilities:
+              drop:
+              - ALL
+        commonConfiguration: |-
+          maxmemory 200mb
+          save ""
+      networkPolicies:
+        enabled: true
+      monitoring:
+        enabled: true
+      gcpeJob:
+        enabled: true
       bbtests:
         enabled: true
-      gitlab-ci-pipelines-exporter:
-        redis:
-          enabled: false
-        monitoring:
-          enabled: true
-        # istio:
-        #   enabled: true
-        #   hardened:
-        #     enabled: true
-        serviceMonitor:
-          enabled: true
-        gcpeJob:
-          enabled: true
-        networkPolicies:
-          enabled: true
-        gitlabSecret: "gitlab-ci-exporter-token"
-        config:
-          log:
-            level: trace
-          project_defaults:
+      # istio:
+      #   enabled: true
+      #   hardened:
+      #     enabled: true
+      serviceMonitor:
+        enabled: true
+      kyverno:
+        crds:
+          install: true
+      gitlabSecret: "gitlab-ci-exporter-token"
+      config:
+        log:
+          level: trace
+        project_defaults:
+          pull:
+            refs:
+              tags:
+                most_recent: 1
+              merge_requests:
+                enabled: false
+                max_age_seconds: 28800
+        # This project name below assumes you follow testing via the gitlab devmaint docs here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version
+        projects:
+          - name: test/test1
             pull:
+              pipeline:
+                jobs:
+                  enabled: false
               refs:
-                tags:
-                  most_recent: 1
                 merge_requests:
-                  enabled: true
-                  max_age_seconds: 28800
-              # This project name below assumes you follow testing via the gitlab devmaint docs here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version
-              projects:
-                - name: test/test1
-                  pull:
-                    pipeline:
-                      jobs:
-                        enabled: true
-                    refs:
-                      merge_requests:
-                        enabled: true
-                        max_age_seconds: 43200
+                  enabled: false
+                  max_age_seconds: 43200
+
+addons:
+  gitlabRunner:
+    enabled: true
+    values:
+      autoRegister:
+        enabled: true
+  gitlab:
+    enabled: true

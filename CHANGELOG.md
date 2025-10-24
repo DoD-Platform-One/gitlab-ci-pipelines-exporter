@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.14] - 2025-10-24
+
+### Changed
+
+- Update gluon 0.9.0 -> 0.9.2
+- Update BB redis chart 22.0.7-bb.0 -> maintained 23.1.1-bb.1
+- Update kubectl 18.3.2 -> 18.4.1
+
 ## [0.3.6-bb.13] - 2025-09-10
 
 ### Changed
@@ -206,3 +214,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Initial creation of the chart in the sandbox
+
