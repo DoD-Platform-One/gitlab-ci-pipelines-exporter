@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.15] - 2025-10-24
+
+### Changed
+
+- Updated a component label in _helpers.tpl from `prometheus-exporter` to `gitlab-ci-pipelines-exporter`
+
 ## [0.3.6-bb.14] - 2025-10-24
 
 ### Changed
