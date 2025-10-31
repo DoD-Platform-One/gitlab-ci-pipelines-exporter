@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.15](https://img.shields.io/badge/Version-0.3.6--bb.15-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.16](https://img.shields.io/badge/Version-0.3.6--bb.16-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -110,7 +110,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.upstream.metrics.enabled | bool | `true` |  |
 | redis-bb.upstream.metrics.image.registry | string | `"registry1.dso.mil"` |  |
 | redis-bb.upstream.metrics.image.repository | string | `"ironbank/bitnami/analytics/redis-exporter"` |  |
-| redis-bb.upstream.metrics.image.tag | string | `"v1.77.0"` |  |
+| redis-bb.upstream.metrics.image.tag | string | `"v1.79.0"` |  |
 | redis-bb.upstream.metrics.image.pullSecrets | list | `[]` |  |
 | redis-bb.upstream.metrics.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.upstream.metrics.resources.limits.memory | string | `"256Mi"` |  |
@@ -152,7 +152,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.upstream.sysctlImage.resources.requests.memory | string | `"256Mi"` |  |
 | gcpeJob.enabled | bool | `false` |  |
 | gcpeJob.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/kubectl"` |  |
-| gcpeJob.image.tag | string | `"18.4.1"` |  |
+| gcpeJob.image.tag | string | `"18.5.1"` |  |
 | gcpeJob.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | gcpeJob.image.securityContext.runAsUser | int | `65534` |  |
 | gcpeJob.image.securityContext.runAsGroup | int | `65534` |  |

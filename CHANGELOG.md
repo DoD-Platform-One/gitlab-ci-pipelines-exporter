@@ -4,6 +4,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.16] - 2025-10-30
+
+### Changed
+
+- Update gluon 0.9.2 -> 0.9.6
+- Update redis-exporter v1.77.0 -> v1.79.0
+- Update kubectl 18.4.1 -> 18.5.1
+
+
+
 ## [0.3.6-bb.15] - 2025-10-24
 
 ### Changed
