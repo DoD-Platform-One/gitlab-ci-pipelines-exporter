@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.16](https://img.shields.io/badge/Version-0.3.6--bb.16-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.17](https://img.shields.io/badge/Version-0.3.6--bb.17-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -42,62 +42,34 @@ helm install gitlab-ci-pipelines-exporter chart/
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| replicas | int | `1` | amount of desired pod(s) replica(s) |
-| image.repository | string | `"registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"` | image repository |
-| image.tag | string | `"v0.5.10"` | image tag tag: <default to chart version> |
-| image.pullPolicy | string | `"IfNotPresent"` | image pullPolicy |
-| image.pullSecrets | list | `[]` | Optional array of imagePullSecrets containing private registry credentials Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
-| image.pullCredentials | object | `{}` | Automatically create a secret with the credentials and use it Cannot be used in conjunction of image.pullSecrets |
-| customLabels | object | `{}` | Custom labels to add into metadata |
-| labels | object | `{}` | additional labels for the service |
-| annotations | object | `{}` | additional annotations for the service |
-| podLabels | object | `{}` | additional labels for the pods |
-| podAnnotations | object | `{}` | additional annotations for the pods |
-| service.type | string | `"ClusterIP"` |  |
-| service.port | int | `80` |  |
-| service.labels | object | `{}` |  |
-| service.annotations | object | `{}` |  |
-| resources | object | `{}` | resources to allocate to the pods |
-| strategy | object | `{"type":"RollingUpdate"}` | deployment strategy type |
-| livenessProbe.httpGet.path | string | `"/health/live"` |  |
-| livenessProbe.httpGet.port | int | `8080` |  |
-| readinessProbe.httpGet.path | string | `"/health/ready"` |  |
-| readinessProbe.httpGet.port | int | `8080` |  |
-| readinessProbe.initialDelaySeconds | int | `5` |  |
-| readinessProbe.timeoutSeconds | int | `5` |  |
-| readinessProbe.failureThreshold | int | `3` |  |
-| readinessProbe.periodSeconds | int | `30` |  |
-| nodeSelector | object | `{}` | node selector for pod assignment # ref: https://kubernetes.io/docs/user-guide/node-selection/ |
-| tolerations | list | `[]` | tolerations for pod assignment # ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
-| affinity | object | `{}` | affinity for pod assignment # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity |
-| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the pods # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context BIG BANG ADDITIONS |
-| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | security context to apply to the containers # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context |
-| command | list | `["gitlab-ci-pipelines-exporter","run"]` | command for the exporter binary |
-| args | list | `["--config","/etc/config.yml"]` | arguments for the exporter binary |
-| envVariables | list | `[{"name":"GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS","value":"tcp://127.0.0.1:8082"}]` | environment variables for the container |
-| config | object | `{"gitlab":{"enable_health_check":false,"health_url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181","url":"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"},"project_defaults":{"pull":{"refs":{"merge_requests":{"enabled":true,"max_age_seconds":28800},"tags":{"most_recent":1}}}},"projects":null}` | configuration of the exporter |
-| gitlabSecret | string | `"gitlab-ci-exporter-token"` | Use the below gitlabSecret if enabling a fresh deployment with gitlab |
-| webhookSecret | string | `""` | name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified) |
-| hostAliases | list | `[]` |  |
-| serviceMonitor.enabled | bool | `false` | deploy a serviceMonitor resource |
-| serviceMonitor.endpoints | list | `[{"interval":"10s","port":"http","scheme":"https","tlsConfig":{"caFile":"/etc/prom-certs/root-cert.pem","certFile":"/etc/prom-certs/cert-chain.pem","insecureSkipVerify":true,"keyFile":"/etc/prom-certs/key.pem"}}]` | endpoints configuration for the monitor |
-| serviceMonitor.labels | object | `{}` | additional labels for the service monitor |
-| serviceMonitor.annotations | object | `{}` | additional annotations for the service monitor BIG BANG ADDITIONS SCHEME AND TLSCONFIG |
-| redis.enabled | bool | `false` | deploy a redis statefulset |
-| redis.architecture | string | `"standalone"` | run in standalone or clustermode |
-| redis.auth.enabled | bool | `false` | enable authentication |
-| redis.metrics.enabled | bool | `false` | enable /metrics endpoint of the redis pods |
-| redis.metrics.serviceMonitor.enabled | bool | `false` | deploy a serviceMonitor resource for the redis pods |
-| redis.master.persistence.enabled | bool | `false` | persist data |
-| ingress.enabled | bool | `false` | deploy a ingress to access the exporter pod(s) /webhook endpoint |
-| ingress.ingressClassName | object | `{}` | ingressClassName to be used instead of the deprecated annotation kubernetes.io/ingress.class |
-| ingress.annotations | string | `nil` | additional annotations for the ingress resource |
-| ingress.path | string | `"/webhook"` | path on the exporter to point the root of the ingress |
-| ingress.pathType | string | `"Prefix"` | pathType for the ingress |
-| ingress.service.port.name | string | `"http"` | service port for the ingress |
-| ingress.hosts | list | `["gcpe.example.com"]` | ingress hosts |
-| ingress.tls | list | `[{"hosts":["gcpe.example.com"],"secretName":{}}]` | ingress tls hosts config |
-| rbac | object | `{"clusterRole":"","enabled":false,"serviceAccount":{"name":""}}` | If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation. |
+| upstream.nameOverride | string | `"gitlab-ci-pipelines-exporter"` |  |
+| upstream.image.repository | string | `"registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"` |  |
+| upstream.image.tag | string | `"v0.5.10"` |  |
+| upstream.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | Custom labels to add into metadata customLabels: {} app: gitlab-ci-pipelines-exporter securityContext -- security context to apply to the pods # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context BIG BANG ADDITIONS |
+| upstream.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
+| upstream.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| upstream.containerSecurityContext.enabled | bool | `true` |  |
+| upstream.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
+| upstream.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| upstream.containerSecurityContext.runAsUser | int | `1000` |  |
+| upstream.containerSecurityContext.runAsGroup | int | `1000` |  |
+| upstream.config.gitlab.url | string | `"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"` |  |
+| upstream.config.gitlab.enable_health_check | bool | `false` |  |
+| upstream.config.gitlab.health_url | string | `"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"` |  |
+| upstream.config.project_defaults.pull.refs.tags.most_recent | int | `1` |  |
+| upstream.config.project_defaults.pull.refs.merge_requests.enabled | bool | `true` |  |
+| upstream.config.project_defaults.pull.refs.merge_requests.max_age_seconds | int | `28800` |  |
+| upstream.config.projects | string | `nil` |  |
+| upstream.gitlabSecret | string | `"gitlab-ci-exporter-token"` | Use the below gitlabSecret if enabling a fresh deployment with gitlab |
+| upstream.serviceMonitor.enabled | bool | `false` |  |
+| upstream.serviceMonitor.endpoints[0].port | string | `"http"` |  |
+| upstream.serviceMonitor.endpoints[0].interval | string | `"10s"` |  |
+| upstream.serviceMonitor.endpoints[0].scheme | string | `"https"` |  |
+| upstream.serviceMonitor.endpoints[0].tlsConfig.caFile | string | `"/etc/prom-certs/root-cert.pem"` |  |
+| upstream.serviceMonitor.endpoints[0].tlsConfig.certFile | string | `"/etc/prom-certs/cert-chain.pem"` |  |
+| upstream.serviceMonitor.endpoints[0].tlsConfig.keyFile | string | `"/etc/prom-certs/key.pem"` |  |
+| upstream.serviceMonitor.endpoints[0].tlsConfig.insecureSkipVerify | bool | `true` |  |
+| upstream.redis.enabled | bool | `false` |  |
 | domain | string | `"dev.bigbang.mil"` |  |
 | redis-bb.enabled | bool | `true` |  |
 | redis-bb.cleanUpgrade.enabled | bool | `true` |  |

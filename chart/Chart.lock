@@ -1,9 +1,12 @@
 dependencies:
+- name: gitlab-ci-pipelines-exporter
+  repository: https://charts.visonneau.fr
+  version: 0.3.5
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
   version: 0.9.6
 - name: redis
   repository: oci://registry1.dso.mil/bigbang/maintained
   version: 23.1.1-bb.1
-digest: sha256:82c8d459d2cad9f046d277e485af6eb48356b9d45908fc5cae4ea326dffafa80
-generated: "2025-10-30T06:11:42.212121081Z"
+digest: sha256:ae95287e159aa48ddc81f3280e81dbaf5f55230d7fc53e4ef5ffaededcaec282
+generated: "2025-11-04T10:12:27.816044-06:00"

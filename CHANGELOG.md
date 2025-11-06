@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.17] - 2025-11-05
+
+### Changed
+
+- Gitlab-ci-pipeline-exporter Passthrough configuration update.
+
 ## [0.3.6-bb.16] - 2025-10-30
 
 ### Changed
