@@ -8,7 +8,7 @@ metadata:
     grafana_dashboard: "1"
 data:
   gitlab-ci-pipelines_rev1.json: |
-    {{ .Files.Get "dashboards/gitlab-ci-pipelines_rev1.json" | replace "{{ .Values.config.gitlab.url }}" .Values.config.gitlab.url | nindent 4 }}
+    {{ .Files.Get "dashboards/gitlab-ci-pipelines_rev1.json" | replace "{{ .Values.upstream.config.gitlab.url }}" .Values.upstream.config.gitlab.url | nindent 4 }}
   gitlab-ci-jobs_rev1.json: |
-    {{ .Files.Get "dashboards/gitlab-ci-jobs_rev1.json" | replace "{{ .Values.config.gitlab.url }}" .Values.config.gitlab.url | nindent 4 }}
+    {{ .Files.Get "dashboards/gitlab-ci-jobs_rev1.json" | replace "{{ .Values.upstream.config.gitlab.url }}" .Values.upstream.config.gitlab.url | nindent 4 }}
 {{- end }}

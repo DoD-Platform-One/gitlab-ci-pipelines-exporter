@@ -1,293 +1,99 @@
 ---
-# replicas -- amount of desired pod(s) replica(s)
-replicas: 1
+### -- We are exposing only the keys that BigBang overrides from the upstream chart. 
+### Please refer to the upstream chart via "helm show values ./chart/charts/<upstream-package.tar.gz>" for other value configs.
+### @default -- Upstream chart values
+upstream:
+  nameOverride: "gitlab-ci-pipelines-exporter"
 
-# prefer using .Release.name to assign namespace!
+  image:
+    # image.repository -- image repository
+    repository: "registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"
+    tag: "v0.5.10"
 
-image:
-  # image.repository -- image repository
-  repository: "registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"
-  tag: "v0.5.10"
+  # -- Custom labels to add into metadata
+  #customLabels: {}
+    # app: gitlab-ci-pipelines-exporter
 
+  # securityContext -- security context to apply to the pods
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context
+  # BIG BANG ADDITIONS
+  securityContext:
+    # runAsUser: 65534  # run as nobody user
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    enabled: true
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
 
-  # image.tag -- image tag
-  # tag: <default to chart version>
+  # containerSecurityContext -- security context to apply to the containers
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    enabled: true
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
 
-  # image.pullPolicy -- image pullPolicy
-  pullPolicy: IfNotPresent
+  # config -- configuration of the exporter
+  config:
+    # # Complete configuration syntax reference available here:
+    # # https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/master/docs/configuration_syntax.md
+    gitlab:
+      url: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
+      enable_health_check: false
+      health_url: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181
+    project_defaults:
+      pull:
+        refs:
+          tags:
+            most_recent: 1
+          merge_requests:
+            enabled: true
+            max_age_seconds: 28800
+    projects:
+      #- name: test/test1
+      #  pull:
+      #    pipeline:
+      #      jobs:
+      #        enabled: true
+      #    refs:
+      #      merge_requests:
+      #        enabled: true
+      #        max_age_seconds: 43200
 
-  # image.pullSecrets -- Optional array of imagePullSecrets containing private registry credentials
-  # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  pullSecrets: []
-  # - name: secretName
+  # -- name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified)
+  #gitlabSecret: ""
+  # -- Use the below gitlabSecret if enabling a fresh deployment with gitlab
+  gitlabSecret: "gitlab-ci-exporter-token"
 
-  # image.pullCredentials -- Automatically create a secret with the credentials and use it
-  # Cannot be used in conjunction of image.pullSecrets
-  pullCredentials:
-    {}
-    # registry: quay.io
-    # username: someone
-    # password: sillyness
-
-# -- Custom labels to add into metadata
-customLabels:
-  {}
-  # app: gitlab-ci-pipelines-exporter
-
-# labels -- additional labels for the deployment resource
-labels: {}
-
-# annotations -- additional annotations for the deployment resource
-annotations: {}
-
-# podLabels -- additional labels for the pods
-podLabels: {}
-
-# podAnnotations -- additional annotations for the pods
-podAnnotations: {}
-
-
-service:
-  # type -- service type
-  type: ClusterIP
-
-  # port -- service port
-  port: 80
-
-  # labels -- additional labels for the service
-  labels: {}
-
-  # annotations -- additional annotations for the service
-  annotations: {}
-
-# resources -- resources to allocate to the pods
-resources: {}
-#  limits:
-#    cpu: 50m
-#    memory: 64Mi
-#  requests:
-#    cpu: 50m
-#    memory: 64Mi
-
-strategy:
-  # strategy -- deployment strategy type
-  type: RollingUpdate
-
-## Liveness and Readiness probes
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-livenessProbe:
-  httpGet:
-    path: /health/live
-    port: 8080
-
-readinessProbe:
-  httpGet:
-    path: /health/ready
-    port: 8080
-  initialDelaySeconds: 5
-  timeoutSeconds: 5
-  failureThreshold: 3
-  periodSeconds: 30
-
-# nodeSelector -- node selector for pod assignment
-## ref: https://kubernetes.io/docs/user-guide/node-selection/
-nodeSelector: {}
-
-# tolerations -- tolerations for pod assignment
-## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: []
-
-# affinity -- affinity for pod assignment
-## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
-affinity: {}
-
-# securityContext -- security context to apply to the pods
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context
-# BIG BANG ADDITIONS
-securityContext:
-  # runAsUser: 65534  # run as nobody user
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  enabled: true
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-
-# containerSecurityContext -- security context to apply to the containers
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context
-containerSecurityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  enabled: true
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-
-  # allowPrivilegeEscalation: false
-
-# command -- command for the exporter binary
-command:
-  - gitlab-ci-pipelines-exporter
-  - run
-
-# args -- arguments for the exporter binary
-args:
-  - --config
-  - /etc/config.yml
-
-# envVariables -- environment variables for the container
-envVariables:
-  - name: GCPE_INTERNAL_MONITORING_LISTENER_ADDRESS
-    value: tcp://127.0.0.1:8082
-
-# config -- configuration of the exporter
-config:
-  # # Complete configuration syntax reference available here:
-  # # https://github.com/mvisonneau/gitlab-ci-pipelines-exporter/blob/master/docs/configuration_syntax.md
-  # gitlab:
-  #   url: https://gitlab.example.com
-  #   token: <your_token>
-  #   enable_health_check: true
-  #   enable_tls_verify: true
-  # projects:
-  #   - name: foo/project
-  #   - name: bar/project
-  # wildcards:
-  #   - owner:
-  #       name: foo
-  #       kind: group
-  gitlab:
-    url: "http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"
-    enable_health_check: false
-    health_url: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181
-  project_defaults:
-    pull:
-      refs:
-        tags:
-          most_recent: 1
-        merge_requests:
-          enabled: true
-          max_age_seconds: 28800
-  projects:
-    #- name: test/test1
-    #  pull:
-    #    pipeline:
-    #      jobs:
-    #        enabled: true
-    #    refs:
-    #      merge_requests:
-    #        enabled: true
-    #        max_age_seconds: 43200
-
-# -- name of a `Secret` containing the GitLab token in the `gitlabToken` field (required unless `config.gitlab.token` is specified)
-#gitlabSecret: ""
-# -- Use the below gitlabSecret if enabling a fresh deployment with gitlab
-gitlabSecret: "gitlab-ci-exporter-token"
-
-# -- name of a `Secret` containing the webhook token in the `webhookToken` field (required unless `config.server.webhook.secret_token` is specified)
-webhookSecret: ""
-
-hostAliases:
-  []
-  # - ip: 192.168.0.1
-  #   hostnames:
-  #     - gitlab.server.com
-
-## Manage a ServiceMonitor resource to automatically configure the endpoint
-## through the Prometheus operator: https://github.com/coreos/prometheus-operator
-serviceMonitor:
-  # serviceMonitor.enabled -- deploy a serviceMonitor resource
-  enabled: false
-
-  # serviceMonitor.endpoints -- endpoints configuration for the monitor
-  endpoints:
-    - port: http
-      interval: 10s
-      scheme: "https"
-      tlsConfig:
-        caFile: /etc/prom-certs/root-cert.pem
-        certFile: /etc/prom-certs/cert-chain.pem
-        keyFile: /etc/prom-certs/key.pem
-        insecureSkipVerify: true
-
-  # serviceMonitor.labels -- additional labels for the service monitor
-  labels: {}
-
-  # serviceMonitor.annotations -- additional annotations for the service monitor
-  # BIG BANG ADDITIONS SCHEME AND TLSCONFIG
-  annotations: {}
-
-redis:
-  # redis.enabled -- deploy a redis statefulset
-  enabled: false
-
-  # redis.architecture -- run in standalone or clustermode
-  architecture: standalone
-
-  auth:
-    # redis.auth.enabled -- enable authentication
+  ## Manage a ServiceMonitor resource to automatically configure the endpoint
+  ## through the Prometheus operator: https://github.com/coreos/prometheus-operator
+  serviceMonitor:
+    # serviceMonitor.enabled -- deploy a serviceMonitor resource
     enabled: false
 
-  metrics:
-    # redis.metrics.enabled -- enable /metrics endpoint of the redis pods
+    # serviceMonitor.endpoints -- endpoints configuration for the monitor
+    endpoints:
+      - port: http
+        interval: 10s
+        scheme: "https"
+        tlsConfig:
+          caFile: /etc/prom-certs/root-cert.pem
+          certFile: /etc/prom-certs/cert-chain.pem
+          keyFile: /etc/prom-certs/key.pem
+          insecureSkipVerify: true
+
+  redis:
+    # redis.enabled -- deploy a redis statefulset
     enabled: false
-
-    serviceMonitor:
-      # redis.metrics.serviceMonitor.enabled -- deploy a serviceMonitor resource for the redis pods
-      enabled: false
-
-  master:
-    persistence:
-      # redis.master.persistence.enabled -- persist data
-      enabled: false
-
-## Ingress configuration (useful when looking to expose /webhook endpoint externally)
-ingress:
-  # ingress.enabled -- deploy a ingress to access the exporter pod(s) /webhook endpoint
-  enabled: false
-
-  # ingress.ingressClassName -- ingressClassName to be used instead of the deprecated annotation kubernetes.io/ingress.class
-  ingressClassName: {}
-
-  # ingress.annotations -- additional annotations for the ingress resource
-  annotations:
-    # kubernetes.io/ingress.class: nginx
-    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-
-  # ingress.path -- path on the exporter to point the root of the ingress
-  path: /webhook
-
-  # ingress.pathType -- pathType for the ingress
-  pathType: Prefix
-
-  service:
-    port:
-      # ingress.service.port.name -- service port for the ingress
-      name: http
-
-  # ingress.hosts -- ingress hosts
-  hosts:
-    - gcpe.example.com
-
-  # ingress.tls -- ingress tls hosts config
-  tls:
-    - hosts:
-        - gcpe.example.com
-      secretName: {}
-
-# rbac -- If your kubernetes cluster defined the pod security policy, then you need to enable this part, and define clusterRole based on your situation.
-rbac:
-  enabled: false
-  clusterRole: ""
-  # serviceAccount -- default name of serviceAccount is "default" if you don't define the name by yourself
-  serviceAccount:
-    name: ""
 
 ## Big bang additions
 domain: dev.bigbang.mil
@@ -295,43 +101,6 @@ domain: dev.bigbang.mil
 # Spin up a redis pod using the bigbang redis chart
 # https://repo1.dso.mil/big-bang/product/packages/redis
 # NOTE: Disabled redis-bb due to version clashing on helper template with gitlab. See implementation below commented section.
-# The below commented implementation works as of bigbang redis:20.2.1-bb.4.
-########################################################
-#redis-bb:
-#  enabled: true
-#  auth:
-#    enabled: false
-#  istio:
-#    redis:
-#      enabled: false
-#  image:
-#    pullSecrets:
-#      - private-registry
-#  metrics:
-#    enabled: true
-#    containerSecurityContext:
-#      enabled: true
-#      runAsUser: 1001
-#      runAsGroup: 1001
-#  master:
-#    containerSecurityContext:
-#      enabled: true
-#      runAsUser: 1001
-#      runAsGroup: 1001
-#      runAsNonRoot: true
-#  replica:
-#    containerSecurityContext:
-#      enabled: true
-#      runAsUser: 1001
-#      runAsGroup: 1001
-#      runAsNonRoot: true
-#      capabilities:
-#        drop:
-#        - ALL
-#  commonConfiguration: |-
-#    maxmemory 200mb
-#    save ""
-########################################################
 redis-bb:
   enabled: true
   cleanUpgrade:

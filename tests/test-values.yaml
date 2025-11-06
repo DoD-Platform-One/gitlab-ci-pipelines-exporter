@@ -81,34 +81,35 @@ packages:
       #   enabled: true
       #   hardened:
       #     enabled: true
-      serviceMonitor:
-        enabled: true
       kyverno:
         crds:
           install: true
-      gitlabSecret: "gitlab-ci-exporter-token"
-      config:
-        log:
-          level: trace
-        project_defaults:
-          pull:
-            refs:
-              tags:
-                most_recent: 1
-              merge_requests:
-                enabled: false
-                max_age_seconds: 28800
-        # This project name below assumes you follow testing via the gitlab devmaint docs here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version
-        projects:
-          - name: test/test1
+      upstream:
+        serviceMonitor:
+          enabled: true
+        gitlabSecret: "gitlab-ci-exporter-token"
+        config:
+          log:
+            level: trace
+          project_defaults:
             pull:
-              pipeline:
-                jobs:
-                  enabled: false
               refs:
+                tags:
+                  most_recent: 1
                 merge_requests:
                   enabled: false
-                  max_age_seconds: 43200
+                  max_age_seconds: 28800
+          # This project name below assumes you follow testing via the gitlab devmaint docs here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-new-gitlab-version
+          projects:
+            - name: test/test1
+              pull:
+                pipeline:
+                  jobs:
+                    enabled: false
+                refs:
+                  merge_requests:
+                    enabled: false
+                    max_age_seconds: 43200
 
 addons:
   gitlabRunner:
