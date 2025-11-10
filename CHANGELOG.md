@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.18] - 2025-11-07
+
+### Changed
+
+- Update redis-exporter v1.79.0 -> v1.80.0
+
+
 ## [0.3.6-bb.17] - 2025-11-05
 
 ### Changed

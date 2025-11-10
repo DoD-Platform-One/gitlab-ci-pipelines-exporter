@@ -126,7 +126,7 @@ redis-bb:
       image:
         registry: registry1.dso.mil
         repository: ironbank/bitnami/analytics/redis-exporter
-        tag: v1.79.0
+        tag: v1.80.0
         pullSecrets: []
       resources:
         limits:

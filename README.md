@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.17](https://img.shields.io/badge/Version-0.3.6--bb.17-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.18](https://img.shields.io/badge/Version-0.3.6--bb.18-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -82,7 +82,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.upstream.metrics.enabled | bool | `true` |  |
 | redis-bb.upstream.metrics.image.registry | string | `"registry1.dso.mil"` |  |
 | redis-bb.upstream.metrics.image.repository | string | `"ironbank/bitnami/analytics/redis-exporter"` |  |
-| redis-bb.upstream.metrics.image.tag | string | `"v1.79.0"` |  |
+| redis-bb.upstream.metrics.image.tag | string | `"v1.80.0"` |  |
 | redis-bb.upstream.metrics.image.pullSecrets | list | `[]` |  |
 | redis-bb.upstream.metrics.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.upstream.metrics.resources.limits.memory | string | `"256Mi"` |  |
