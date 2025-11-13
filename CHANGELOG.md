@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.19] - 2025-11-13
+
+### Changed
+
+- ironbank/bitnami/redis (source) 8.2.2 -> 8.2.3
+- registry1.dso.mil/ironbank/bitnami/redis (source) 8.2.2 -> 8.2.3
+
+
 ## [0.3.6-bb.18] - 2025-11-07
 
 ### Changed

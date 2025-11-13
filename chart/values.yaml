@@ -152,7 +152,7 @@ redis-bb:
     image:
       registry: registry1.dso.mil
       repository: ironbank/bitnami/redis
-      tag: 8.2.2
+      tag: 8.2.3
       pullSecrets:
       - private-registry
     master:
