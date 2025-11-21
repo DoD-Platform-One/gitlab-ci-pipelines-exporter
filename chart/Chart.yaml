@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: gitlab-ci-pipelines-exporter
-version: 0.3.6-bb.19
+version: 0.3.6-bb.20
 appVersion: v0.5.10
 description: Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 home: https://github.com/mvisonneau/gitlab-ci-pipelines-exporter
@@ -40,4 +40,4 @@ annotations:
       condition: redis-bb.enabled
     - name: kubectl
       condition: gcpeJob.enabled
-      image: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl:18.5.1
+      image: registry1.dso.mil/ironbank/gitlab/gitlab/kubectl:18.5.2
