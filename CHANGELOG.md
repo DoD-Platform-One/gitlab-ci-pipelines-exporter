@@ -4,6 +4,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+
+## [0.3.6-bb.20] - 2025-11-20
+
+### Changed
+
+
+- Update kubectl 18.5.1 -> 18.5.2
+
+
 ## [0.3.6-bb.19] - 2025-11-13
 
 ### Changed
