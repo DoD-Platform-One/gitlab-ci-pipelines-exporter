@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.21] - 2025-12-01
+
+### Changed
+
+- Update redis-exporter v1.80.0 -> v1.80.1
+- Update kubectl 18.5.2 -> 18.6.1
+
 
 ## [0.3.6-bb.20] - 2025-11-20
 
