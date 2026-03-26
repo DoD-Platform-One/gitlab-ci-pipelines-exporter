@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # gitlab-ci-pipelines-exporter
 
-![Version: 0.3.6-bb.22](https://img.shields.io/badge/Version-0.3.6--bb.22-informational?style=flat-square) ![AppVersion: v0.5.10](https://img.shields.io/badge/AppVersion-v0.5.10-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
+![Version: 0.3.6-bb.23](https://img.shields.io/badge/Version-0.3.6--bb.23-informational?style=flat-square) ![AppVersion: v0.6.0](https://img.shields.io/badge/AppVersion-v0.6.0-informational?style=flat-square) ![Maintenance Track: bb_maintained](https://img.shields.io/badge/Maintenance_Track-bb_maintained-yellow?style=flat-square)
 
 Prometheus / OpenMetrics exporter for GitLab CI pipelines insights
 
@@ -44,7 +44,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 |-----|------|---------|-------------|
 | upstream.nameOverride | string | `"gitlab-ci-pipelines-exporter"` |  |
 | upstream.image.repository | string | `"registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter"` |  |
-| upstream.image.tag | string | `"v0.5.10"` |  |
+| upstream.image.tag | string | `"v0.6.0"` |  |
 | upstream.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"enabled":true,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000}` | Custom labels to add into metadata customLabels: {} app: gitlab-ci-pipelines-exporter securityContext -- security context to apply to the pods # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context BIG BANG ADDITIONS |
 | upstream.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | upstream.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
@@ -53,9 +53,9 @@ helm install gitlab-ci-pipelines-exporter chart/
 | upstream.containerSecurityContext.runAsNonRoot | bool | `true` |  |
 | upstream.containerSecurityContext.runAsUser | int | `1000` |  |
 | upstream.containerSecurityContext.runAsGroup | int | `1000` |  |
-| upstream.config.gitlab.url | string | `"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"` |  |
+| upstream.config.gitlab.url | string | `"https://gitlab.dev.bigbang.mil"` |  |
 | upstream.config.gitlab.enable_health_check | bool | `false` |  |
-| upstream.config.gitlab.health_url | string | `"http://gitlab-webservice-default.gitlab.svc.cluster.local:8181"` |  |
+| upstream.config.gitlab.health_url | string | `"https://gitlab.dev.bigbang.mil"` |  |
 | upstream.config.project_defaults.pull.refs.tags.most_recent | int | `1` |  |
 | upstream.config.project_defaults.pull.refs.merge_requests.enabled | bool | `true` |  |
 | upstream.config.project_defaults.pull.refs.merge_requests.max_age_seconds | int | `28800` |  |
@@ -82,7 +82,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.upstream.metrics.enabled | bool | `true` |  |
 | redis-bb.upstream.metrics.image.registry | string | `"registry1.dso.mil"` |  |
 | redis-bb.upstream.metrics.image.repository | string | `"ironbank/bitnami/analytics/redis-exporter"` |  |
-| redis-bb.upstream.metrics.image.tag | string | `"v1.80.1"` |  |
+| redis-bb.upstream.metrics.image.tag | string | `"v1.82.0"` |  |
 | redis-bb.upstream.metrics.image.pullSecrets | list | `[]` |  |
 | redis-bb.upstream.metrics.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.upstream.metrics.resources.limits.memory | string | `"256Mi"` |  |
@@ -98,8 +98,8 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.upstream.securityContext.fsGroup | int | `1001` |  |
 | redis-bb.upstream.securityContext.runAsNonRoot | bool | `true` |  |
 | redis-bb.upstream.image.registry | string | `"registry1.dso.mil"` |  |
-| redis-bb.upstream.image.repository | string | `"ironbank/bitnami/redis"` |  |
-| redis-bb.upstream.image.tag | string | `"8.2.3"` |  |
+| redis-bb.upstream.image.repository | string | `"ironbank/opensource/redis/redis8"` |  |
+| redis-bb.upstream.image.tag | string | `"8.6.1"` |  |
 | redis-bb.upstream.image.pullSecrets[0] | string | `"private-registry"` |  |
 | redis-bb.upstream.master.resources.limits.cpu | string | `"250m"` |  |
 | redis-bb.upstream.master.resources.limits.memory | string | `"256Mi"` |  |
@@ -124,7 +124,7 @@ helm install gitlab-ci-pipelines-exporter chart/
 | redis-bb.upstream.sysctlImage.resources.requests.memory | string | `"256Mi"` |  |
 | gcpeJob.enabled | bool | `false` |  |
 | gcpeJob.image.repository | string | `"registry1.dso.mil/ironbank/gitlab/gitlab/kubectl"` |  |
-| gcpeJob.image.tag | string | `"18.6.1"` |  |
+| gcpeJob.image.tag | string | `"18.9.2"` |  |
 | gcpeJob.image.pullSecrets[0].name | string | `"private-registry"` |  |
 | gcpeJob.image.securityContext.runAsUser | int | `65534` |  |
 | gcpeJob.image.securityContext.runAsGroup | int | `65534` |  |

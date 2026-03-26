@@ -84,9 +84,15 @@ packages:
       - name: gitlab
         namespace: bigbang
     values:
-      monitoring:
+      istio:
         enabled: true
+        hardened:
+          enabled: true
+        monitoring:
+          enabled: true
       gcpeJob:
+        enabled: true
+      monitoring:
         enabled: true
       networkPolicies:
         enabled: true
@@ -97,6 +103,8 @@ packages:
           enabled: true
         gitlabSecret: "gitlab-ci-exporter-token"
         config:
+          gitlab:
+            url: "https://gitlab.dev.bigbang.mil"
           log:
             level: trace
           project_defaults:
@@ -124,19 +132,23 @@ addons:
   gitlabRunner:
     enabled: true
     values:
-      autoRegister:
+      upstream:
+        autoRegister:
+          enabled: true
+        runners:
+           protected: false
+           tags: "bb-prod-ci, generic"
+      networkPolicies:
         enabled: true
-      # networkPolicies:
-      #   enabled: true
-      #   controlPlaneCidr: 172.20.0.0/29
-      #   kubeAPIPort: 6443
+        controlPlaneCidr: 172.20.0.0/29
+        kubeAPIPort: 6443
   gitlab:
     enabled: true
     flux:
       timeout: 20m
     git:
       # Check tag for latest published version here: https://repo1.dso.mil/big-bang/product/packages/gitlab/-/tags
-      tag: "9.1.2-bb.0"
+      tag: "9.9.3-bb.1"
       #tag: null
       #branch: "your-development-branch-here"
 
@@ -150,6 +162,8 @@ addons:
       client_secret: ""
 
     values:
+      networkPolicies:
+        enabled: true
       bbtests:
         enabled: false
       gitlab:
