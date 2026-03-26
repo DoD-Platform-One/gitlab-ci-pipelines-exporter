@@ -4,11 +4,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.6-bb.23] - 2026-03-25
+
+### Changed
+
+- Updated gluon 0.9.6 -> 0.9.8
+- Updated ironbank/bitnami/analytics/redis-exporter v1.80.1 -> v1.82.0
+- Updated redis 23.1.1-bb.1 -> 24.1.2-bb.1
+- Updated registry1.dso.mil/ironbank/bitnami/analytics/redis-exporter v1.80.1 -> v1.82.0
+- Updated registry1.dso.mil/ironbank/opensource/redis/redis8 8.2.3 -> 8.6.1
+- Updated registry1.dso.mil/ironbank/gitlab/gitlab/kubectl 18.6.1 -> 18.9.2
+- Updated registry1.dso.mil/ironbank/opensource/gitlab-ci-pipelines-exporter v0.5.10 -> v0.6.0
+- Migrated ironbank/bitnami/redis 8.2.3 ->  ironbank/opensource/redis/redis8 8.6.1
+
 ## [0.3.6-bb.22] - 2025-12-17
 
 ### Changed
 
-- - Updates the egress-kube-api NetworkPolicy to allow for setting the vpcCidr value
+- Updates the egress-kube-api NetworkPolicy to allow for setting the vpcCidr value
 
 ## [0.3.6-bb.21] - 2025-12-01
 
